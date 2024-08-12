@@ -41,9 +41,9 @@
         <aside class="left-sidebar">
             <!-- Sidebar scroll-->
             <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
+                <div class="brand-logo d-flex align-items-center justify-content-center mt-2">
                     <a href="{{ route('dashboard') }}" class="text-nowrap logo-img">
-                        <img src="{{ $urlLogoEmpresa }}" width="180" alt="Logo sistema" />
+                        <img src="{{ asset('images/logos/land.png') }}" width="100" alt="Logo sistema" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -57,7 +57,7 @@
                             <span class="hide-menu">Home</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="/" aria-expanded="false">
+                            <a class="sidebar-link" href="/dashboard" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
@@ -69,56 +69,72 @@
                             <span class="hide-menu">Menu</span>
                         </li>
 
-                        @foreach ($menuOptions as $option)
-                            @if ($option->children->count() <= 0)
+                        
+                        @role('admin')
+                   
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="{{ $option->direccion }}">
+                                    <a class="sidebar-link" href="/clientes">
                                         <span>
-                                            <i class="ti ti-folder"></i>
+                                            <i class="fa-solid fa-users" style="font-size: 20px;"></i>
                                         </span>
-                                        <span class="hide-menu">{{ $option->nombre }}</span>
+                                        <span class="hide-menu">Clientes</span>
                                     </a>
                                 </li>
-                            @endif
 
-                            @if ($option->children->count() >= 1)
-                                <li class="sidebar-item dropdown custom-dropdown"
-                                    style="position: relative;display: block">
-                                    <a class="sidebar-link dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-expanded="false" href="javascript:void(0)">
+
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="#">
                                         <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="icon icon-tabler icon-tabler-folder-filled" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path
-                                                    d="M9 3a1 1 0 0 1 .608 .206l.1 .087l2.706 2.707h6.586a3 3 0 0 1 2.995 2.824l.005 .176v8a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-11a3 3 0 0 1 2.824 -2.995l.176 -.005h4z"
-                                                    stroke-width="0" fill="currentColor"></path>
-                                            </svg>
+                                            <i class="fa-solid fa-kaaba" style="font-size: 20px;"></i>
                                         </span>
-                                        <span class="hide-menu">{{ $option->nombre }}</span>
+                                        <span class="hide-menu">Propiedades</span>
                                     </a>
-
-                                    <ul class="ml-3 dropdown-menu w-100">
-                                        @foreach ($option->children as $child)
-                                            <li class="sidebar-item">
-                                                <a class="sidebar-link dropdown-item" href="{{ $child->direccion }}"
-                                                    aria-expanded="false">
-                                                    <span>
-                                                        <i class="ti ti-folder"></i>
-                                                    </span>
-                                                    <span class="hide-menu">{{ $child->nombre }}</span>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-
                                 </li>
-                            @endif
-                        @endforeach
+                         
 
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="#">
+                                        <span>
+                                            <i class="fa-solid fa-briefcase" style="font-size: 20px;"></i>
+                                     
+                                        </span>
+                                        <span class="hide-menu">Financiamientos</span>
+                                    </a>
+                                </li>
+
+
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="#">
+                                        <span>
+                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
+                               
+                                        </span>
+                                        <span class="hide-menu">Pagos</span>
+                                    </a>
+                                </li>
+
+                                @endrole
+
+
+
+                                @role('invitado')
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="#">
+                                        <span>
+                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
+                               
+                                        </span>
+                                        <span class="hide-menu">Pagos</span>
+                                    </a>
+                                </li>
+
+                                @endrole
+                         
+                         
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -139,13 +155,13 @@
                             </a>
                         </li>
                         <li class="nav-item d-none d-xl-block">
-                            <h3>{{ $nombreEmpresa }}</h3>
+                            <h3>TerraCobro</h3>
                         </li>
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                             <li class="nav-item">
-                                {{ Auth::user()->nombres }}
+                                {{ Auth::user()->name }}
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
@@ -155,14 +171,15 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
-                                    <div class="message-body" style="position: relative">
-                                        <form action="{{ route('logout') }}" method="POST">
+                                    <div class="message-body text-center">
+                                        <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <input type="submit" value="Cerrar session"
-                                                class="btn btn-outline-primary mx-3 mt-2 d-block">
+                                            <input type="submit" value="Cerrar sesión"
+                                                class="btn btn-danger mx-auto mt-2 d-block">
                                         </form>
                                     </div>
                                 </div>
+
                             </li>
                         </ul>
                     </div>
@@ -181,6 +198,7 @@
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('js/app.min.js') }}"></script>
     <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="{{ asset('js/helpers.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#miTabla').DataTable({
@@ -272,41 +290,6 @@
             });
         }
 
-
-        function confirmBlock(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción bloqueará el registro.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, bloquear',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('block-form-' + id).submit();
-                }
-            });
-        }
-
-
-        function confirmUnblock(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción desbloqueará el registro.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, desbloquear',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('unblock-form-' + id).submit();
-                }
-            });
-        }
     </script>
 
 
