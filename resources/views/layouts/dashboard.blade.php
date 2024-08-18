@@ -84,7 +84,7 @@
 
 
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="#">
+                                    <a class="sidebar-link" href="/propiedades">
                                         <span>
                                             <i class="fa-solid fa-kaaba" style="font-size: 20px;"></i>
                                         </span>
@@ -95,7 +95,7 @@
 
 
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="#">
+                                    <a class="sidebar-link" href="/financiamientos">
                                         <span>
                                             <i class="fa-solid fa-briefcase" style="font-size: 20px;"></i>
                                      
@@ -107,7 +107,7 @@
 
 
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="#">
+                                    <a class="sidebar-link" href="/pagos">
                                         <span>
                                      <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
                                
@@ -198,7 +198,6 @@
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('js/app.min.js') }}"></script>
     <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
-    <script src="{{ asset('js/helpers.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#miTabla').DataTable({

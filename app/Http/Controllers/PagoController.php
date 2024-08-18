@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Financiamiento;
+use App\Models\Pago;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PagoController extends Controller
 {
@@ -11,7 +14,15 @@ class PagoController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $pagos = Pago::all();
+
+            return view('pagos.index', compact('pagos'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('pago.index')->with('error', 'Error al cargar la página de pagos');
+        }
     }
 
     /**
@@ -19,7 +30,16 @@ class PagoController extends Controller
      */
     public function create()
     {
-        //
+        try {
+
+            $financiamientos = Financiamiento::with('cliente', 'propiedad')->get()->pluck('descripcion', 'id_financiamiento');
+
+
+            return view('pagos.create', compact('financiamientos'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('pago.index')->with('error', 'Error al cargar la página para agregar un pago');
+        }
     }
 
     /**

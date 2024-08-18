@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\FinanciamientoController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PropiedadController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -42,6 +45,69 @@ Route::controller(ClienteController::class)->group(function () {
 
     // DELETE METHOD
     Route::delete('/clientes/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('cliente.destroy');
+});
+
+
+
+//RUTAS PARA PROPIEDAD
+
+Route::controller(PropiedadController::class)->group(function () {
+    Route::get('/propiedades', 'index')->middleware(['auth', 'verified'])->name('propiedad.index');
+    Route::get('/propiedades/create', 'create')->middleware(['auth', 'verified'])->name('propiedad.create');
+    Route::get('/propiedades/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('propiedad.edit');
+
+    // POST METHOD
+    Route::post('/propiedades/create', 'store')->middleware(['auth', 'verified'])->name('propiedad.store');
+
+
+    // PUT METHOD
+    Route::put('/propiedades/update/{id}', 'update')->middleware(['auth', 'verified'])->name('propiedad.update');
+
+
+    // DELETE METHOD
+    Route::delete('/propiedades/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('propiedad.destroy');
+});
+
+
+
+//RUTAS PARA FINANCIAMIENTO
+
+Route::controller(FinanciamientoController::class)->group(function () {
+    Route::get('/financiamientos', 'index')->middleware(['auth', 'verified'])->name('financiamiento.index');
+    Route::get('/financiamientos/create', 'create')->middleware(['auth', 'verified'])->name('financiamiento.create');
+    Route::get('/financiamientos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('financiamiento.edit');
+
+    // POST METHOD
+    Route::post('/financiamientos/create', 'store')->middleware(['auth', 'verified'])->name('financiamiento.store');
+
+
+    // PUT METHOD
+    Route::put('/financiamientos/update/{id}', 'update')->middleware(['auth', 'verified'])->name('financiamiento.update');
+
+
+    // DELETE METHOD
+    Route::delete('/financiamientos/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('financiamiento.destroy');
+});
+
+
+
+//RUTAS PARA PAGOS
+
+Route::controller(PagoController::class)->group(function () {
+    Route::get('/pagos', 'index')->middleware(['auth', 'verified'])->name('pago.index');
+    Route::get('/pagos/create', 'create')->middleware(['auth', 'verified'])->name('pago.create');
+    Route::get('/pagos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('pago.edit');
+
+    // POST METHOD
+    Route::post('/pagos/create', 'store')->middleware(['auth', 'verified'])->name('pago.store');
+
+
+    // PUT METHOD
+    Route::put('/pagos/update/{id}', 'update')->middleware(['auth', 'verified'])->name('pago.update');
+
+
+    // DELETE METHOD
+    Route::delete('/pagos/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('pago.destroy');
 });
 
 

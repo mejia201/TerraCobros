@@ -11,7 +11,7 @@ class Financiamiento extends Model
 
     protected $table = 'financiamiento';
     protected $primaryKey = 'id_financiamiento';
-    protected $keyType = 'unsignedBigInteger';
+
 
     protected $fillable = [
         'id_propiedad',
@@ -37,4 +37,11 @@ class Financiamiento extends Model
     {
         return $this->hasMany(Pago::class, 'id_financiamiento');
     }
+
+
+     
+     public function getDescripcionAttribute()
+     {
+         return $this->cliente->nombre . ' - ' . ' (Pago Mensual: $' . $this->pagoMensual . ')';
+     }
 }

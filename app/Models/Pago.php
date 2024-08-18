@@ -11,7 +11,7 @@ class Pago extends Model
 
     protected $table = 'pago';
     protected $primaryKey = 'id_pago';
-    protected $keyType = 'unsignedBigInteger';
+
 
     protected $fillable = [
         'id_financiamiento',

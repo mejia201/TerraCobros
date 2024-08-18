@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Propiedad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PropiedadController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+
+            $propiedades = Propiedad::all();
+
+            return view('propiedad.index', compact('propiedades'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('propiedad.index')->with('error', 'Error al cargar la página de propiedades');
+        }
     }
 
     /**
@@ -19,7 +29,12 @@ class PropiedadController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            return view('propiedad.create');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('cliente.index')->with('error', 'Error al cargar la página para agregar una propiedad');
+        }
     }
 
     /**

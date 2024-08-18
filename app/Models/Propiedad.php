@@ -11,7 +11,6 @@ class Propiedad extends Model
 
     protected $table = 'propiedad';
     protected $primaryKey = 'id_propiedad';
-    protected $keyType = 'unsignedBigInteger';
 
     protected $fillable = [
         'areaTerreno',

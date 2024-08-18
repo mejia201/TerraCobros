@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Financiamiento;
+use App\Models\Propiedad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FinanciamientoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+
+            $financiamientos = Financiamiento::all();
+
+            return view('financiamiento.index', compact('financiamientos'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('financiamiento.index')->with('error', 'Error al cargar la página de financiamientos');
+        }
     }
 
     /**
@@ -19,7 +31,18 @@ class FinanciamientoController extends Controller
      */
     public function create()
     {
-        //
+        try {
+
+            $clientes = Cliente::pluck('nombre', 'id_cliente');
+            $propiedades = Propiedad::pluck('areaTerreno', 'id_propiedad');
+
+
+            return view('financiamiento.create', compact('clientes', 'propiedades'));
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->route('financiamiento.index')->with('error', 'Error al cargar la página para agregar un financiamiento');
+        }
     }
 
     /**
