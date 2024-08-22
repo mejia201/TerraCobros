@@ -3,7 +3,7 @@
 @section('contenido')
 
     <div class="card mt-3">
-        <h5 class="card-header">Administración de clientes</h5>
+        <h5 class="card-header">Administración de Clientes</h5>
         <div class="card-body">
             <a href="{{ route('cliente.create') }}" class="btn btn-success mb-3">
                 <i class="fas fa-plus"></i>
@@ -40,7 +40,7 @@
                                         <form action="{{ route('cliente.destroy', $cliente->id_cliente) }}" method="POST" id="block-form-{{ $cliente->id_cliente }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger" onclick="confirmBlock({{ $cliente->id_cliente }})">
+                                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $cliente->id_cliente }})">
                                                 <i class="fa-solid fa-lock"></i>
                                             </button>
                                         </form>

@@ -3,7 +3,7 @@
 @section('contenido')
 
     <div class="card mt-3">
-        <h5 class="card-header">Administración de financiamientos</h5>
+        <h5 class="card-header">Administración de Financiamientos</h5>
         <div class="card-body">
             <a href="{{ route('financiamiento.create') }}" class="btn btn-success mb-3">
                 <i class="fas fa-plus"></i>

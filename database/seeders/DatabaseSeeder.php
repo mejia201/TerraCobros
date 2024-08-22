@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -27,6 +28,12 @@ class DatabaseSeeder extends Seeder
 
      $userGuest = User::factory()->invitado()->create();
      $userGuest->assignRole($roleInvitado);
+
+
+   
+     DB::table('proyecto')->insert([
+        ['nombre_proyecto' => 'Proyecto Agricola El Jobo'],
+    ]);
 
 
     }

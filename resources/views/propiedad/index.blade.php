@@ -3,7 +3,7 @@
 @section('contenido')
 
     <div class="card mt-3">
-        <h5 class="card-header">Administración de propiedades</h5>
+        <h5 class="card-header">Administración de Propiedades</h5>
         <div class="card-body">
             <a href="{{ route('propiedad.create') }}" class="btn btn-success mb-3">
                 <i class="fas fa-plus"></i>
@@ -25,27 +25,36 @@
                                 <th class="border-bottom-0"><b>Prima en Efectivo</b></th>
                                 <th class="border-bottom-0"><b>Monto a Financiar</b></th>
                                 <th class="border-bottom-0"><b>Ingreso Requerido</b></th>
+                                <th class="border-bottom-0"><b>Estado</b></th>
                                 <th><b>Acciones</b></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             @foreach ($propiedades as $propiedad)
                                 <tr>
-                                    <td class="border-bottom-0">{{ $propiedad->areaTerreno }}</td>
-                                    <td class="border-bottom-0">{{ $propiedad->precioPorVRS }}</td>
-                                    <td class="border-bottom-0">{{ $propiedad->precioTotal }}</td>
-                                    <td class="border-bottom-0">{{ $propiedad->primaEnEfectivo }}</td>
-                                    <td class="border-bottom-0">{{ $propiedad->montoAFinanciar }}</td>
-                                    <td class="border-bottom-0">{{ $propiedad->ingresoRequerido }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->areaTerreno, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->precioPorVRS, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->precioTotal, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->primaEnEfectivo, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->montoAFinanciar, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->ingresoRequerido, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">
+                                        @if($propiedad->estado == 'R')
+                                            Reservado
+                                        @else
+                                            Disponible
+                                        @endif
+                                    </td>  
+                                  
                                     <td class="d-flex gap-1 justify-content-center">
                                         <a href="{{ route('propiedad.edit', $propiedad->id_propiedad) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>
                                         </a>
-                                        <form action="{{ route('propiedad.destroy', $propiedad->id_propiedad) }}" method="POST" id="block-form-{{ $propiedad->id_propiedad }}">
+                                        <form action="{{ route('propiedad.destroy', $propiedad->id_propiedad) }}" method="POST" id="delete-form-{{ $propiedad->id_propiedad }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger" onclick="confirmBlock({{ $propiedad->id_propiedad }})">
-                                                <i class="fa-solid fa-lock"></i>
+                                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $propiedad->id_propiedad }})">
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>

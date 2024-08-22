@@ -3,7 +3,7 @@
 @section('contenido')
 
     <div class="card mt-3">
-        <h5 class="card-header">Administración de pagos</h5>
+        <h5 class="card-header">Administración de informacion para pagos</h5>
         <div class="card-body">
             <a href="{{ route('pago.create') }}" class="btn btn-success mb-3">
                 <i class="fas fa-plus"></i>
@@ -14,7 +14,7 @@
 
             <div class="table-responsive">
                 @if ($pagos->isEmpty())
-                    <p class="text-center">No se encontraron registros de pagos.</p>
+                    <p class="text-center">No se encontraron registros de informacion para pagos.</p>
                 @else
                     <table id="miTabla" class="table text-nowrap mb-0 align-middle table-striped table-bordered">
                         <thead class="text-dark fs-4">

@@ -19,6 +19,7 @@ class Propiedad extends Model
         'primaEnEfectivo',
         'montoAFinanciar',
         'ingresoRequerido',
+        'estado',
     ];
 
     public function financiamientos()

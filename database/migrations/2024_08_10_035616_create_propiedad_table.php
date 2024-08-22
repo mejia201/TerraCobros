@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('primaEnEfectivo');
             $table->float('montoAFinanciar');
             $table->float('ingresoRequerido');
+            $table->char('estado', 1);
             $table->timestamps();
         });
     }

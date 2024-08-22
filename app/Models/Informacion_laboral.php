@@ -29,11 +29,6 @@ class Informacion_laboral extends Model
         'remesas',
     ];
 
-    protected $casts = [
-        'salario_mensual' => 'float',
-        'ingresos_adicionales' => 'float',
-        'remesas' => 'float',
-    ];
 
     // Relación inversa con Cliente
     public function cliente()

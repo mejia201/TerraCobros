@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DetallePagoController;
 use App\Http\Controllers\FinanciamientoController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropiedadController;
@@ -26,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 
 //RUTAS PARA CLIENTES
@@ -111,6 +114,23 @@ Route::controller(PagoController::class)->group(function () {
 });
 
 
+//RUTAS PARA DETALLE DE PAGOS
 
+Route::controller(DetallePagoController::class)->group(function () {
+    Route::get('/realizar-pago', 'index')->middleware(['auth', 'verified'])->name('cobro.index');
+    Route::get('/realizar-pago/create', 'create')->middleware(['auth', 'verified'])->name('cobro.create');
+    Route::get('/realizar-pago/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('cobro.edit');
+
+    // POST METHOD
+    Route::post('/realizar-pago/create', 'store')->middleware(['auth', 'verified'])->name('cobro.store');
+
+
+    // PUT METHOD
+    Route::put('/realizar-pago/update/{id}', 'update')->middleware(['auth', 'verified'])->name('cobro.update');
+
+
+    // DELETE METHOD
+    Route::delete('/realizar-pago/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('cobro.destroy');
+});
 
 require __DIR__.'/auth.php';

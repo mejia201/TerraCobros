@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Informacion_laboral;
+use App\Models\Referencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +56,14 @@ class ClienteController extends Controller
                 'dui' => 'required|unique:cliente,dui',
                 'telefono' => 'required|regex:/^\d{4}-\d{4}$/|unique:cliente,telefono',
                 'email' => 'required|email|unique:cliente,email',
+                'tipo_cliente' => 'required',
+                'precio_venta'=> 'required',
+                'prima'=> 'required',
+                'fecha_reserva'=> 'required',
+                'valor_reserva'=> 'required',
+                'fecha_nacimiento'=> 'required',
+                'edad'=> 'required',
+                'sexo'=> 'required',
             ];
     
             $messages = [
@@ -66,7 +76,16 @@ class ClienteController extends Controller
                 'email.required' => 'El correo es requerido.',
                 'email.unique' => 'El correo ya está registrado, intenta de nuevo.',
                 'email.email' => 'El campo "Correo" debe ser una dirección de correo electrónico válida.',
-                'tipo_cliente' => 'required',
+                
+                'tipo_cliente.required' => 'El campo "Tipo de Cliente" es obligatorio.',
+                'precio_venta.required' => 'El campo "precio_venta" es obligatorio.',
+                'prima.required' => 'El campo "prima" es obligatorio.',
+                'fecha_reserva.required' => 'El campo "fecha reserva" es obligatorio.',
+                'valor_reserva.required' => 'El campo "valor reserva" es obligatorio.',
+                'fecha_nacimiento.required' => 'El campo "Fecha de Nacimiento" es obligatorio.',
+                'edad.required' => 'El campo "Edad" es obligatorio.',
+                'sexo.required' => 'El campo "Sexo" es obligatorio.',
+
             ];
     
             $validator = Validator::make($request->all(), $rules, $messages);
@@ -100,6 +119,37 @@ class ClienteController extends Controller
             $cliente->prima = $request->input('prima');
             $cliente->valor_financiado = $request->input('valor_financiado');
             $cliente->save();
+
+
+            // Creación de la información laboral
+            $informacionLaboral = new Informacion_laboral();
+            $informacionLaboral->id_cliente = $cliente->id_cliente;
+            $informacionLaboral->estado_laboral = $request->input('estado_laboral');
+            $informacionLaboral->nombre_empresa = $request->input('nombre_empresa');
+            $informacionLaboral->direccion_empresa = $request->input('direccion_empresa');
+            $informacionLaboral->cargo = $request->input('cargo');
+            $informacionLaboral->telefono_empresa = $request->input('telefono_empresa');
+            $informacionLaboral->tiempo_en_empresa = $request->input('tiempo_en_empresa');
+            $informacionLaboral->jefe_inmediato = $request->input('jefe_inmediato');
+            $informacionLaboral->telefono_jefe = $request->input('telefono_jefe');
+            $informacionLaboral->registro_iva = $request->input('registro_iva');
+            $informacionLaboral->tipo_negocio = $request->input('tipo_negocio');
+            $informacionLaboral->salario_mensual = $request->input('salario_mensual');
+            $informacionLaboral->ingresos_adicionales = $request->input('ingresos_adicionales');
+            $informacionLaboral->remesas = $request->input('remesas');
+            $informacionLaboral->save();
+
+
+            $referencias = $request->input('referencias');
+            foreach ($referencias as $referenciaData) {
+                $referencia = new Referencia();
+                $referencia->id_cliente = $cliente->id_cliente;
+                $referencia->tipo = $referenciaData['tipo'];
+                $referencia->nombre = $referenciaData['nombre'];
+                $referencia->direccion = $referenciaData['direccion'];
+                $referencia->telefono = $referenciaData['telefono'];
+                $referencia->save();
+            }
     
             return redirect()->route('cliente.index')->with('success', 'El registro se ha agregado con éxito.');
     
@@ -108,18 +158,12 @@ class ClienteController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         //
     }
@@ -127,7 +171,7 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         //
     }

@@ -71,6 +71,19 @@
 
                         
                         @role('admin')
+
+
+
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/propiedades">
+                                        <span>
+                                            <i class="fa-solid fa-kaaba" style="font-size: 20px;"></i>
+                                        </span>
+                                        <span class="hide-menu">Propiedades</span>
+                                    </a>
+                                </li>
+                                
                    
                                 <li class="{{ 'sidebar-item' }}">
                                     <a class="sidebar-link" href="/clientes">
@@ -83,14 +96,6 @@
 
 
 
-                                <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="/propiedades">
-                                        <span>
-                                            <i class="fa-solid fa-kaaba" style="font-size: 20px;"></i>
-                                        </span>
-                                        <span class="hide-menu">Propiedades</span>
-                                    </a>
-                                </li>
                          
 
 
@@ -109,10 +114,21 @@
                                 <li class="{{ 'sidebar-item' }}">
                                     <a class="sidebar-link" href="/pagos">
                                         <span>
-                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
+                                     <i class="fa-solid fa-money-check-dollar" style="font-size: 20px;"></i>
                                
                                         </span>
                                         <span class="hide-menu">Pagos</span>
+                                    </a>
+                                </li>
+
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/realizar-pago">
+                                        <span>
+                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
+                               
+                                        </span>
+                                        <span class="hide-menu">Realizar Pagos</span>
                                     </a>
                                 </li>
 
@@ -123,12 +139,12 @@
                                 @role('invitado')
 
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="#">
+                                    <a class="sidebar-link" href="/realizar-pago">
                                         <span>
                                      <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
                                
                                         </span>
-                                        <span class="hide-menu">Pagos</span>
+                                        <span class="hide-menu">Realizar Pagos</span>
                                     </a>
                                 </li>
 
@@ -155,7 +171,7 @@
                             </a>
                         </li>
                         <li class="nav-item d-none d-xl-block">
-                            <h3>TerraCobro</h3>
+                            <h3>Proyecto Agricola El Jobo</h3>
                         </li>
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id('id_financiamiento');
             $table->unsignedBigInteger('id_propiedad');
             $table->unsignedBigInteger('id_cliente');
-            $table->float('tasaInteres');
-            $table->integer('plazoAnos');
-            $table->float('pagoMensual');
-            $table->integer('numeroCuotas');
-            $table->date('fechaInicio');
+            $table->float('tasaInteres'); //esto seria en base al 12% siempre
+            //ya lo calcularia desde mi tabla propiedad, solo para venir a colocar a esta tabla 
+            $table->integer('plazoAnos'); //por ejemplo 7
+            $table->float('pagoMensual'); //por ejemplo 225.04
+            $table->integer('numeroCuotas'); // la cantidad de coutas en 7 años 
+            $table->date('fechaInicio'); // la fecha en la que inicia el financiemiento
             $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedad')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_cliente')->references('id_cliente')->on('cliente')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
