@@ -21,6 +21,7 @@ class Financiamiento extends Model
         'pagoMensual',
         'numeroCuotas',
         'fechaInicio',
+        'seleccionado',
     ];
 
     public function cliente()
@@ -44,4 +45,6 @@ class Financiamiento extends Model
      {
          return $this->cliente->nombre . ' - ' . ' (Pago Mensual: $' . $this->pagoMensual . ')';
      }
+
+     
 }

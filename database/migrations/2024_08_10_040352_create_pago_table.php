@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_financiamiento');
             $table->date('fechaPago');
             $table->float('montoPago');
-            $table->date('fechaPagoEsperada');
+            $table->string('fechaPagoEsperada');
             $table->foreign('id_financiamiento')->references('id_financiamiento')->on('financiamiento')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

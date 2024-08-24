@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('detalle_pago', function (Blueprint $table) {
         $table->id('id_detalle_pago');
         $table->unsignedBigInteger('id_pago');
-        $table->date('fechaPago');
+        $table->string('fechaPago');
         $table->float('montoPagado');
         $table->float('monto_mora')->nullable()->default(0);  // Permite valores nulos y establece un valor por defecto de 0
         $table->float('monto_total');

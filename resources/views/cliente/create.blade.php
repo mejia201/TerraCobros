@@ -69,7 +69,7 @@
             
                         <div class="form-group col-md-4 mt-2">
                             <label for="fecha_nacimiento">Fecha de Nacimiento: *</label>
-                            <input type="date" class="form-control @error('fecha_nacimiento') is-invalid @enderror" name="fecha_nacimiento" id="fecha_nacimiento">
+                            <input type="date" class="form-control @error('fecha_nacimiento') is-invalid @enderror" name="fecha_nacimiento" id="fecha_nacimiento"  onchange="calcularEdad()">
                             @error('fecha_nacimiento')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -164,7 +164,7 @@
                         </div>
             
                         <div class="form-group col-md-4 mt-2">
-                            <label for="tipo_cliente">Tipo de Cliente:</label>
+                            <label for="tipo_cliente">Tipo de Cliente: *</label>
                             <select class="form-control @error('tipo_cliente') is-invalid @enderror" name="tipo_cliente" id="tipo_cliente">
                                 <option value="">Seleccione</option>
                                 <option value="Comerciante">Comerciante</option>
@@ -184,7 +184,7 @@
                         <hr>
                         
                         <div class="form-group col-md-4 mt-2">
-                            <label for="valor_reserva">Valor de la Reserva: *</label>
+                            <label for="valor_reserva">Valor de la Reserva:</label>
                             <input type="text" class="form-control @error('valor_reserva') is-invalid @enderror" name="valor_reserva" id="valor_reserva">
                             @error('valor_reserva')
                                 <div class="invalid-feedback">
@@ -194,7 +194,7 @@
                         </div>
             
                         <div class="form-group col-md-4 mt-2">
-                            <label for="fecha_reserva">Fecha de la Reserva: *</label>
+                            <label for="fecha_reserva">Fecha de la Reserva:</label>
                             <input type="date" class="form-control @error('fecha_reserva') is-invalid @enderror" name="fecha_reserva" id="fecha_reserva">
                             @error('fecha_reserva')
                                 <div class="invalid-feedback">
@@ -204,7 +204,7 @@
                         </div>
             
                         <div class="form-group col-md-4 mt-2">
-                            <label for="precio_venta">Precio Venta: *</label>
+                            <label for="precio_venta">Precio Venta:</label>
                             <input type="text" class="form-control @error('precio_venta') is-invalid @enderror" name="precio_venta" id="precio_venta">
                             @error('precio_venta')
                                 <div class="invalid-feedback">
@@ -214,7 +214,7 @@
                         </div>
             
                         <div class="form-group col-md-4 mt-2">
-                            <label for="prima">Prima: *</label>
+                            <label for="prima">Prima:</label>
                             <input type="text" class="form-control @error('prima') is-invalid @enderror" name="prima" id="prima">
                             @error('prima')
                                 <div class="invalid-feedback">
@@ -224,7 +224,7 @@
                         </div>
 
                         <div class="form-group col-md-4 mt-2">
-                            <label for="valor_financiado">Valor Financiado: *</label>
+                            <label for="valor_financiado">Valor Financiado:</label>
                             <input type="text" class="form-control @error('valor_financiado') is-invalid @enderror" name="valor_financiado" id="valor_financiado">
                             @error('valor_financiado')
                                 <div class="invalid-feedback">
@@ -383,22 +383,22 @@
                     <div class="row">
 
                         <div class="form-group col-md-6">
-                            <label for="tipo">Tipo de Referencia:</label>
+                            <label for="tipo">Tipo de Referencia: *</label>
                             <select class="form-control @error('referencias.*.tipo') is-invalid @enderror" name="referencias[0][tipo]" id="tipo">
                                 <option value="personal">Personal</option>
                                 <option value="laboral">Laboral</option>
                             </select>
-                            @error('tipo')
-                                <div class="invalid-feedback">
+                            @error('referencias.*.tipo')
+                            <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label for="nombre">Nombre de la Referencia:</label>
-                            <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
-                            @error('nombre')
+                            <label for="nombre">Nombre de la Referencia: *</label>
+                            <input type="text" class="form-control @error('referencias.*.nombre') is-invalid @enderror" name="referencias[0][nombre]" id="nombre">
+                            @error('referencias.*.nombre')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -406,9 +406,9 @@
                         </div>
             
                         <div class="form-group col-md-6">
-                            <label for="telefono">Teléfono de la Referencia:</label>
-                            <input type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" id="telefono">
-                            @error('telefono')
+                            <label for="telefono">Teléfono de la Referencia: *</label>
+                            <input type="text" class="form-control @error('referencias.*.telefono') is-invalid @enderror" name="referencias[0][telefono]" id="telefono">
+                            @error('referencias.*.telefono')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -416,9 +416,9 @@
                         </div>
             
                         <div class="form-group col-md-6 mt-2">
-                            <label for="direccion">Dirección de la Referencia:</label>
-                            <input type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" id="direccion">
-                            @error('direccion')
+                            <label for="direccion">Dirección de la Referencia: *</label>
+                            <input type="text" class="form-control @error('referencias.*.direccion') is-invalid @enderror" name="referencias[0][direccion]" id="direccion">
+                            @error('referencias.*.direccion')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -472,7 +472,61 @@
             }
             $(this).val(telefono);
         });
+
+        $('#telefono_empresa').on('input', function() {
+            let telefono = $(this).val();
+            telefono = telefono.replace(/\D/g, '');
+            if (telefono.length >= 4) {
+                telefono = telefono.substr(0, 4) + '-' + telefono.substr(4, 4);
+            }
+            $(this).val(telefono);
+        });
+
+        $('#telefono_jefe').on('input', function() {
+            let telefono = $(this).val();
+            telefono = telefono.replace(/\D/g, '');
+            if (telefono.length >= 4) {
+                telefono = telefono.substr(0, 4) + '-' + telefono.substr(4, 4);
+            }
+            $(this).val(telefono);
+        });
+
+        $(document).ready(function() {
+    
+        $(document).on('input', 'input[name^="referencias["][name$="[telefono]"]', function() {
+            let telefono = $(this).val();
+            telefono = telefono.replace(/\D/g, ''); 
+            if (telefono.length >= 4) {
+                telefono = telefono.substr(0, 4) + '-' + telefono.substr(4, 4);
+            }
+            $(this).val(telefono);
+        });
+});
+
+
+      
     });
+
+
+    function calcularEdad() {
+        var fechaNacimiento = document.getElementById('fecha_nacimiento').value;
+        var fechaActual = new Date();
+        var fechaNac = new Date(fechaNacimiento);
+
+        if (fechaNac.getTime() > fechaActual.getTime()) {
+            document.getElementById('edad').value = '';
+            return;
+        }
+
+        var edad = fechaActual.getFullYear() - fechaNac.getFullYear();
+        var m = fechaActual.getMonth() - fechaNac.getMonth();
+
+        if (m < 0 || (m === 0 && fechaActual.getDate() < fechaNac.getDate())) {
+            edad--;
+        }
+
+        document.getElementById('edad').value = edad;
+    }
 </script>
 
 
@@ -490,7 +544,7 @@
             newReferencia.innerHTML = `
 
                  <div class="form-group col-md-6">
-                    <label for="tipo[]">Tipo de Referencia:</label>
+                    <label for="tipo[]">Tipo de Referencia: *</label>
                     <select class="form-control" name="referencias[${referenciaIndex}][tipo]" id="tipo[]">
                         <option value="personal">Personal</option>
                         <option value="laboral">Laboral</option>
@@ -498,17 +552,17 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="nombre[]">Nombre de la Referencia:</label>
+                    <label for="nombre[]">Nombre de la Referencia: *</label>
                     <input type="text" class="form-control" name="referencias[${referenciaIndex}][nombre]" id="nombre[]">
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="telefono[]">Teléfono de la Referencia:</label>
+                    <label for="telefono[]">Teléfono de la Referencia: *</label>
                     <input type="text" class="form-control" name="referencias[${referenciaIndex}][telefono]" id="telefono[]">
                 </div>
 
                 <div class="form-group col-md-6 mt-2">
-                    <label for="direccion[]">Dirección de la Referencia:</label>
+                    <label for="direccion[]">Dirección de la Referencia: *</label>
                     <input type="text" class="form-control" name="referencias[${referenciaIndex}][direccion]" id="direccion[]">
                 </div>
             `;

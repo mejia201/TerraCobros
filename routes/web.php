@@ -79,6 +79,7 @@ Route::controller(FinanciamientoController::class)->group(function () {
     Route::get('/financiamientos', 'index')->middleware(['auth', 'verified'])->name('financiamiento.index');
     Route::get('/financiamientos/create', 'create')->middleware(['auth', 'verified'])->name('financiamiento.create');
     Route::get('/financiamientos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('financiamiento.edit');
+    Route::get('/financiamiento/opciones', 'obtenerOpcionesFinanciamiento')->middleware(['auth', 'verified'])->name('financiamiento.obtenerOpciones');
 
     // POST METHOD
     Route::post('/financiamientos/create', 'store')->middleware(['auth', 'verified'])->name('financiamiento.store');

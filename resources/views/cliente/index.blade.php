@@ -23,6 +23,7 @@
                                 <th class="border-bottom-0"><b>Nombre</b></th>
                                 <th class="border-bottom-0"><b>Teléfono</b></th>
                                 <th class="border-bottom-0"><b>Email</b></th>
+                                <th class="border-bottom-0"><b>Tipo</b></th>
                                 <th><b>Acciones</b></th>
                             </tr>
                         </thead>
@@ -33,15 +34,16 @@
                                     <td class="border-bottom-0">{{ $cliente->nombre }}</td>
                                     <td class="border-bottom-0">{{ $cliente->telefono }}</td>
                                     <td class="border-bottom-0">{{ $cliente->email }}</td>
+                                    <td class="border-bottom-0">{{ $cliente->tipo_cliente }}</td>
                                     <td class="d-flex gap-1 justify-content-center">
                                         <a href="{{ route('cliente.edit', $cliente->id_cliente) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>
                                         </a>
-                                        <form action="{{ route('cliente.destroy', $cliente->id_cliente) }}" method="POST" id="block-form-{{ $cliente->id_cliente }}">
+                                        <form action="{{ route('cliente.destroy', $cliente->id_cliente) }}" method="POST" id="delete-form-{{ $cliente->id_cliente }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $cliente->id_cliente }})">
-                                                <i class="fa-solid fa-lock"></i>
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>

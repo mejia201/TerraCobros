@@ -30,72 +30,65 @@
                 @enderror
             </div>
 
-            <!-- Propiedad -->
-            <div class="form-group col-md-6">
+             <!-- Propiedad -->
+             <div class="form-group col-md-6">
                 <label for="id_propiedad">Propiedad:</label>
-                <select class="form-control @error('id_propiedad') is-invalid @enderror" name="id_propiedad" id="id_propiedad" required>
+                <select class="form-control" name="id_propiedad" id="id_propiedad" required>
                     <option value="" disabled selected>Seleccionar Propiedad</option>
-          
-                    @foreach($propiedades as $id_propiedad => $areaTerreno )
-                        <option value="{{ $id_propiedad }}">{{ $areaTerreno }}</option>
+                    @foreach($propiedades as $propiedad)
+                        <option value="{{ $propiedad->id_propiedad }}">
+                            Lote: {{$propiedad->id_propiedad}} - Área: {{ $propiedad->areaTerreno }} VRS² - Precio Total: ${{ $propiedad->precioTotal }} - Estado: {{ $propiedad->estado == 'R' ? 'Reservado' : 'Disponible' }}
+                        </option>
                     @endforeach
                 </select>
-                @error('id_propiedad')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
             </div>
 
-            <!-- Tasa de interés -->
-            <div class="form-group col-md-6 mt-3">
-                <label for="tasa_interes">Tasa de Interés (%):</label>
-                <input type="number" step="0.01" class="form-control @error('tasa_interes') is-invalid @enderror" name="tasa_interes" id="tasa_interes" value="{{ old('tasa_interes') }}" required>
-                @error('tasa_interes')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+            {{-- Modal para agregar financiamiento --}}
+            <div class="modal fade" id="modalOpcionesFinanciamiento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalOpcionesFinanciamientoLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="modalOpcionesFinanciamientoLabel">Opciones de Financiamiento</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                @enderror
+                    <div class="modal-body">
+                      <ul id="opcionesFinanciamientoList" class="list-group"></ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            
+
+            <!-- Campos que se llenarán con la opción seleccionada -->
+            <div class="form-group col-md-6 mt-3">
+                <label for="tasaInteres">Tasa de Interés (%):</label>
+                <input type="number" step="0.01" class="form-control" name="tasaInteres" id="tasaInteres" required>
             </div>
 
-            <!-- Plazo en años -->
             <div class="form-group col-md-6 mt-3">
-                <label for="plazo_anios">Plazo (años):</label>
-                <input type="number" class="form-control @error('plazo_anios') is-invalid @enderror" name="plazo_anios" id="plazo_anios" value="{{ old('plazo_anios') }}" required>
-                @error('plazo_anios')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <label for="plazoAnos">Plazo (años):</label>
+                <input type="number" class="form-control" name="plazoAnos" id="plazoAnos" required>
             </div>
 
-            <!-- Pago mensual -->
             <div class="form-group col-md-6 mt-3">
-                <label for="pago_mensual">Pago Mensual:</label>
-                <input type="number" step="0.01" class="form-control @error('pago_mensual') is-invalid @enderror" name="pago_mensual" id="pago_mensual" value="{{ old('pago_mensual') }}" required>
-                @error('pago_mensual')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <label for="pagoMensual">Pago Mensual:</label>
+                <input type="number" step="0.01" class="form-control" name="pagoMensual" id="pagoMensual" required>
             </div>
 
-            <!-- Número de cuotas -->
             <div class="form-group col-md-6 mt-3">
-                <label for="numero_cuotas">Número de Cuotas:</label>
-                <input type="number" class="form-control @error('numero_cuotas') is-invalid @enderror" name="numero_cuotas" id="numero_cuotas" value="{{ old('numero_cuotas') }}" required>
-                @error('numero_cuotas')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <label for="numeroCuotas">Número de Cuotas:</label>
+                <input type="number" class="form-control" name="numeroCuotas" id="numeroCuotas" required>
             </div>
 
             <!-- Fecha de inicio -->
             <div class="form-group col-md-6 mt-3">
-                <label for="fecha_inicio">Fecha de Inicio:</label>
-                <input type="date" class="form-control @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio" value="{{ old('fecha_inicio') }}" required>
-                @error('fecha_inicio')
+                <label for="fechaInicio">Fecha de Inicio:</label>
+                <input type="date" class="form-control @error('fechaInicio') is-invalid @enderror" name="fechaInicio" id="fechaInicio" value="{{ old('fechaInicio') }}" required>
+                @error('fechaInicio')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -117,6 +110,42 @@
 
 @section('AfterScript')
 
+
+<script>
+    $(document).ready(function() {
+        $('#id_propiedad').on('change', function() {
+            var id_propiedad = $(this).val();
+            if (id_propiedad) {
+                $.ajax({
+                    url: "{{ route('financiamiento.obtenerOpciones') }}",
+                    type: "GET",
+                    data: { id_propiedad: id_propiedad },
+                    success: function(opciones) {
+                        $('#opcionesFinanciamientoList').empty();
+                        opciones.forEach(function(opcion, index) {
+                            $('#opcionesFinanciamientoList').append(
+                                `<li class="list-group-item">
+                                    Plazo: ${opcion.plazoAnos} años, Pago Mensual: $${opcion.pagoMensual}, Cuotas: ${opcion.numeroCuotas} 
+                                    <button type="button" class="btn btn-primary btn-sm float-right seleccionar-opcion ms-2" data-opcion='${JSON.stringify(opcion)}'>Seleccionar</button>
+                                </li>`
+                            );
+                        });
+                        $('#modalOpcionesFinanciamiento').modal('show');
+                    }
+                });
+            }
+        });
+    
+        $(document).on('click', '.seleccionar-opcion', function() {
+            var opcion = $(this).data('opcion');
+            $('#tasaInteres').val(opcion.tasaInteres);
+            $('#plazoAnos').val(opcion.plazoAnos);
+            $('#pagoMensual').val(opcion.pagoMensual);
+            $('#numeroCuotas').val(opcion.numeroCuotas);
+            $('#modalOpcionesFinanciamiento').modal('hide');
+        });
+    });
+    </script>
 
 @endsection
 

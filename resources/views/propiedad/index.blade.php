@@ -19,25 +19,21 @@
                     <table id="miTabla" class="table text-nowrap mb-0 align-middle table-striped table-bordered">
                         <thead class="text-dark fs-4">
                             <tr>
+                                <th class="border-bottom-0"><b>Lote</b></th>
                                 <th class="border-bottom-0"><b>Area Terreno</b></th>
                                 <th class="border-bottom-0"><b>Precio Por VRS</b></th>
                                 <th class="border-bottom-0"><b>Precio Total</b></th>
-                                <th class="border-bottom-0"><b>Prima en Efectivo</b></th>
-                                <th class="border-bottom-0"><b>Monto a Financiar</b></th>
-                                <th class="border-bottom-0"><b>Ingreso Requerido</b></th>
                                 <th class="border-bottom-0"><b>Estado</b></th>
                                 <th><b>Acciones</b></th>
                             </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody>
                             @foreach ($propiedades as $propiedad)
                                 <tr>
+                                    <td class="border-bottom-0">{{ $propiedad->id_propiedad }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->areaTerreno, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioPorVRS, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioTotal, 2, '.', ',') }}</td>
-                                    <td class="border-bottom-0">{{ number_format($propiedad->primaEnEfectivo, 2, '.', ',') }}</td>
-                                    <td class="border-bottom-0">{{ number_format($propiedad->montoAFinanciar, 2, '.', ',') }}</td>
-                                    <td class="border-bottom-0">{{ number_format($propiedad->ingresoRequerido, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">
                                         @if($propiedad->estado == 'R')
                                             Reservado
