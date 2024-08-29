@@ -121,17 +121,6 @@
                                     </a>
                                 </li>
 
-
-                                <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="/realizar-pago">
-                                        <span>
-                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
-                               
-                                        </span>
-                                        <span class="hide-menu">Realizar Pagos</span>
-                                    </a>
-                                </li>
-
                                 @endrole
 
 
@@ -139,15 +128,15 @@
                                 @role('invitado')
 
                                 <li class="{{ 'sidebar-item' }}">
-                                    <a class="sidebar-link" href="/realizar-pago">
+                                    <a class="sidebar-link" href="/pagos">
                                         <span>
-                                     <i class="fa-solid fa-hand-holding-dollar" style="font-size: 20px;"></i>
+                                     <i class="fa-solid fa-money-check-dollar" style="font-size: 20px;"></i>
                                
                                         </span>
-                                        <span class="hide-menu">Realizar Pagos</span>
+                                        <span class="hide-menu">Pagos</span>
                                     </a>
                                 </li>
-
+                                
                                 @endrole
                          
                          

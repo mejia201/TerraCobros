@@ -20,8 +20,10 @@ return new class extends Migration
             $table->integer('plazoAnos'); //por ejemplo 7
             $table->float('pagoMensual'); //por ejemplo 225.04
             $table->integer('numeroCuotas'); // la cantidad de coutas en 7 años 
+            $table->float('montoPendiente'); 
             $table->string('fechaInicio')->nullable();  // la fecha en la que inicia el financiemiento
             $table->boolean('seleccionado')->default(false); 
+            
             $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedad')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_cliente')->references('id_cliente')->on('cliente')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

@@ -40,7 +40,8 @@
                                     <td class="border-bottom-0">{{ number_format($financiamiento->pagoMensual, 2, '.', ',') }}</td>
 
                                     <td class="border-bottom-0">{{ $financiamiento->numeroCuotas }}</td>
-                                    <td class="border-bottom-0">{{ $financiamiento->fechaInicio}}</td>
+                                    <td class="border-bottom-0">{{ \Carbon\Carbon::parse($financiamiento->fechaInicio)->format('d-m-Y') }}</td>
+
                                     <td class="d-flex gap-1 justify-content-center">
                                         <a href="{{ route('financiamiento.edit', $financiamiento->id_financiamiento) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>

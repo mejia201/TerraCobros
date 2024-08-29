@@ -21,6 +21,7 @@ class Financiamiento extends Model
         'pagoMensual',
         'numeroCuotas',
         'fechaInicio',
+        'montoPendiente',
         'seleccionado',
     ];
 

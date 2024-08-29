@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetallePagoController;
 use App\Http\Controllers\FinanciamientoController;
 use App\Http\Controllers\HomeController;
@@ -16,10 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 
 //RUTAS PARA USUARIO
@@ -80,7 +84,6 @@ Route::controller(FinanciamientoController::class)->group(function () {
     Route::get('/financiamientos/create', 'create')->middleware(['auth', 'verified'])->name('financiamiento.create');
     Route::get('/financiamientos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('financiamiento.edit');
     Route::get('/financiamiento/opciones', 'obtenerOpcionesFinanciamiento')->middleware(['auth', 'verified'])->name('financiamiento.obtenerOpciones');
-
     // POST METHOD
     Route::post('/financiamientos/create', 'store')->middleware(['auth', 'verified'])->name('financiamiento.store');
 
@@ -101,6 +104,7 @@ Route::controller(PagoController::class)->group(function () {
     Route::get('/pagos', 'index')->middleware(['auth', 'verified'])->name('pago.index');
     Route::get('/pagos/create', 'create')->middleware(['auth', 'verified'])->name('pago.create');
     Route::get('/pagos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('pago.edit');
+    Route::get('/financiamientos/{id_financiamiento}/cuotas', [PagoController::class, 'getCuotasByFinanciamiento']);    
 
     // POST METHOD
     Route::post('/pagos/create', 'store')->middleware(['auth', 'verified'])->name('pago.store');
@@ -115,23 +119,5 @@ Route::controller(PagoController::class)->group(function () {
 });
 
 
-//RUTAS PARA DETALLE DE PAGOS
-
-Route::controller(DetallePagoController::class)->group(function () {
-    Route::get('/realizar-pago', 'index')->middleware(['auth', 'verified'])->name('cobro.index');
-    Route::get('/realizar-pago/create', 'create')->middleware(['auth', 'verified'])->name('cobro.create');
-    Route::get('/realizar-pago/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('cobro.edit');
-
-    // POST METHOD
-    Route::post('/realizar-pago/create', 'store')->middleware(['auth', 'verified'])->name('cobro.store');
-
-
-    // PUT METHOD
-    Route::put('/realizar-pago/update/{id}', 'update')->middleware(['auth', 'verified'])->name('cobro.update');
-
-
-    // DELETE METHOD
-    Route::delete('/realizar-pago/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('cobro.destroy');
-});
 
 require __DIR__.'/auth.php';

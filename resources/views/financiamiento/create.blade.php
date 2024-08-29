@@ -95,7 +95,6 @@
                 @enderror
             </div>
 
-        
 
             <div class="form-group col-md-12 mt-3 text-end">
                 <input type="submit" class="btn btn-primary" value="Registrar">

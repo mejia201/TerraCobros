@@ -15,9 +15,10 @@ class Pago extends Model
 
     protected $fillable = [
         'id_financiamiento',
-        'fechaPago',
-        'montoPago',
         'fechaPagoEsperada',
+        'montoPago',
+        'cuota',
+        'estado'
     ];
 
     public function financiamiento()

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Financiamiento;
+use App\Models\Pago;
 use App\Models\Propiedad;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -123,6 +125,16 @@ class FinanciamientoController extends Controller
             $pagoMensual = $request->input('pagoMensual');
             $numeroCuotas = $request->input('numeroCuotas');
             $fechaInicio = $request->input('fechaInicio');
+
+            // Obtener la propiedad para obtener el monto a financiar
+        $propiedad = Propiedad::find($request->input('id_propiedad'));
+        if (!$propiedad) {
+            return redirect()->route('financiamiento.index')
+                ->with('error', 'La propiedad seleccionada no existe.')
+                ->withInput();
+        }
+
+        $montoAFinanciar = $propiedad->montoAFinanciar;
     
             // Creación de la instancia de Financiamiento
             $financiamiento = new Financiamiento();
@@ -134,11 +146,32 @@ class FinanciamientoController extends Controller
             $financiamiento->numeroCuotas = $numeroCuotas;
             $financiamiento->fechaInicio = $fechaInicio;
             $financiamiento->seleccionado = true;
+            $financiamiento->montoPendiente = $montoAFinanciar;
             $financiamiento->save();
 
             $propiedad = Propiedad::find($idPropiedad);
             $propiedad->estado = 'R';
             $propiedad->save();
+
+
+            // Generar las fechas de pago esperadas
+            $numeroCuotas = $request->input('numeroCuotas');
+            $fechaInicio = Carbon::parse($request->input('fechaInicio'));
+            $montoMensual = $request->input('pagoMensual');
+
+            for ($i = 1; $i <= $numeroCuotas; $i++) {
+                // Calcula la fecha del pago con base en la fecha de inicio y el número de cuota
+                $fechaPagoEsperada = $fechaInicio->copy()->addMonths($i);
+
+                Pago::create([
+                    'id_financiamiento' => $financiamiento->id_financiamiento,
+                    'fechaPagoEsperada' => $fechaPagoEsperada,
+                    'montoPago' => $montoMensual,
+                    'cuota' => $i,
+                    'estado' => 'Pendiente',
+                ]);
+            }
+
             
             return redirect()->route('financiamiento.index')->with('success', 'Financiamiento registrado exitosamente.');
     
@@ -277,7 +310,7 @@ class FinanciamientoController extends Controller
     
         } catch (\Exception $e) {
             Log::error('Error al eliminar el financiamiento: ' . $e->getMessage());
-                return redirect()->route('cliente.index')->with('error', 'Sucedió un error al intentar eliminar el registro del financiamiento.');
+                return redirect()->route('financiamiento.index')->with('error', 'Sucedió un error al intentar eliminar el registro del financiamiento.');
         }
     }
 }

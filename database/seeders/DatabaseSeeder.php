@@ -30,11 +30,6 @@ class DatabaseSeeder extends Seeder
      $userGuest->assignRole($roleInvitado);
 
 
-   
-     DB::table('proyecto')->insert([
-        ['nombre_proyecto' => 'Proyecto Agricola El Jobo'],
-    ]);
-
 
     }
 }
