@@ -24,7 +24,9 @@
                                 <th class="border-bottom-0"><b>Plazo de años</b></th>
                                 <th class="border-bottom-0"><b>Pago mensual</b></th>
                                 <th class="border-bottom-0"><b>N. cuotas</b></th>
+                                <th class="border-bottom-0"><b>Deuda Total</b></th>
                                 <th class="border-bottom-0"><b>Fecha Inicio</b></th>
+                                
                                 <th><b>Acciones</b></th>
                             </tr>
                         </thead>
@@ -40,6 +42,7 @@
                                     <td class="border-bottom-0">{{ number_format($financiamiento->pagoMensual, 2, '.', ',') }}</td>
 
                                     <td class="border-bottom-0">{{ $financiamiento->numeroCuotas }}</td>
+                                    <td class="border-bottom-0">{{ number_format($financiamiento->montoPendiente, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ \Carbon\Carbon::parse($financiamiento->fechaInicio)->format('d-m-Y') }}</td>
 
                                     <td class="d-flex gap-1 justify-content-center">

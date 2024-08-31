@@ -23,6 +23,7 @@
                                 <th class="border-bottom-0"><b>Area Terreno</b></th>
                                 <th class="border-bottom-0"><b>Precio Por VRS</b></th>
                                 <th class="border-bottom-0"><b>Precio Total</b></th>
+                                <th class="border-bottom-0"><b>Monto a Financiar</b></th>
                                 <th class="border-bottom-0"><b>Estado</b></th>
                                 <th><b>Acciones</b></th>
                             </tr>
@@ -34,6 +35,7 @@
                                     <td class="border-bottom-0">{{ number_format($propiedad->areaTerreno, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioPorVRS, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioTotal, 2, '.', ',') }}</td>
+                                    <td class="border-bottom-0">{{ number_format($propiedad->montoAFinanciar, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">
                                         @if($propiedad->estado == 'R')
                                             Reservado

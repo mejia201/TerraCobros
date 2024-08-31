@@ -32,4 +32,10 @@ class Pago extends Model
         return $this->financiamiento->descripcion . ' - Fecha de Pago: ' . $this->fechaPago->format('d-m-Y');
     }
 
+
+    public function detallePagos()
+    {
+        return $this->hasMany(DetallePago::class, 'id_pago', 'id_pago');
+    }
+
 }

@@ -88,19 +88,6 @@ class PagoController extends Controller
             ->where('cuota', $cuota)
             ->firstOrFail();
     
-            // Crear el nuevo registro de pago
-            // Pago::create([
-            //     'id_financiamiento' => $idFinanciamiento,
-            //     'cuota' => $cuota,
-            //     'fechaPago' => $fechaPago,
-            //     'fechaPagoEsperada' => $fechaPagoEsperada,
-            //     'montoPago' => $montoPago,
-            //     'monto_mora' => $montoMora,
-            //     'monto_total' => $montoTotal,
-            //     'estado' => 'Cancelado',
-            // ]);
-
-
             $pago->update([
                 'estado' => 'Cancelado',
             ]);
@@ -115,10 +102,6 @@ class PagoController extends Controller
                 'descripcion' => 'Pago de cuota ' . $cuota,
             ]);
     
-            // Actualizar el monto pendiente en el financiamiento
-            // $financiamiento->montoPendiente -= $montoPago;
-            // $financiamiento->save();
-
             $financiamiento = Financiamiento::findOrFail($idFinanciamiento);
             $financiamiento->montoPendiente -= $montoPago;
             $financiamiento->save();
@@ -138,7 +121,16 @@ class PagoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            // Buscar el pago por su ID, cargando las relaciones correctamente
+            $pago = Pago::with('detallePagos', 'financiamiento.cliente')->findOrFail($id);
+            
+            // Cargar la vista de edición con los datos del pago
+            return view('pagos.edit', compact('pago'));
+        } catch (\Exception $e) {
+            Log::error('Error al cargar la página de edición: ' . $e->getMessage());
+            return redirect()->route('pago.index')->with('error', 'Error al cargar la página de edición.');
+        }
     }
 
     /**
@@ -146,7 +138,27 @@ class PagoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $pago = Pago::findOrFail($id);
+            
+            foreach ($request->input('montoPago') as $index => $montoPago) {
+                $detallePago = $pago->detallePagos[$index];
+                $detallePago->update([
+                    'montoPago' => $montoPago,
+                    'fechaPago' => $request->input('fechaPago')[$index],
+                    'monto_mora' => $request->input('montoMora')[$index],
+                    'descripcion' => $request->input('descripcion')[$index],
+                ]);
+            }
+    
+            DB::commit();
+            return redirect()->route('pago.index')->with('success', 'Pago actualizado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error al actualizar el pago: ' . $e->getMessage());
+            return redirect()->route('pago.index')->with('error', 'Error al actualizar el pago.');
+        }
     }
 
     /**

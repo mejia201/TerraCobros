@@ -23,7 +23,7 @@
                                 <th class="border-bottom-0"><b>Fecha de Pago</b></th>
                                 <th class="border-bottom-0"><b>Monto del Pago</b></th>
                                 <th class="border-bottom-0"><b>Descripción</b></th>
-                                <th class="border-bottom-0"><b>Acciones</b></th>
+                                {{-- <th class="border-bottom-0"><b>Acciones</b></th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -33,18 +33,18 @@
                                     <td class="border-bottom-0">{{ \Carbon\Carbon::parse($pago->fechaPago)->format('d-m-Y') }}</td>
                                     <td class="border-bottom-0">{{ $pago->monto_total }}</td>
                                     <td class="border-bottom-0">{{ $pago->descripcion }}</td>
-                                    <td class="d-flex gap-1 justify-content-center">
+                                    {{-- <td class="d-flex gap-1 justify-content-center">
                                         <a href="{{ route('pago.edit', $pago->id_pago) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>
                                         </a>
-                                        {{-- <form action="{{ route('pago.destroy', $pago->id_pago) }}" method="POST" id="delete-form-{{ $pago->id_pago }}">
+                                        <form action="{{ route('pago.destroy', $pago->id_pago) }}" method="POST" id="delete-form-{{ $pago->id_pago }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $pago->id_pago }})">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
-                                        </form> --}}
-                                    </td>
+                                        </form>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
