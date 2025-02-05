@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('propiedad', function (Blueprint $table) {
             $table->id('id_propiedad');
+            $table->string('poligono');
+            $table->string('lote');
             $table->float('areaTerreno');
             $table->float('precioPorVRS');
             $table->float('precioTotal');

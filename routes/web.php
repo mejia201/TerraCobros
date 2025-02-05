@@ -52,6 +52,14 @@ Route::controller(ClienteController::class)->group(function () {
 
     // DELETE METHOD
     Route::delete('/clientes/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('cliente.destroy');
+
+    //descargar el estado de cuenta 
+   // Route::get('/clientes/estado-cuenta/{id}/pdf', 'descargarEstadoCuentaPDF')->middleware(['auth', 'verified'])->name('cliente.descargarEstadoCuentaPDF');
+
+
+    Route::get('/clientes/estado-cuenta/{id_cliente}/{id_financiamiento}', [ClienteController::class, 'descargarEstadoCuentaPDF'])
+    ->name('cliente.descargarEstadoCuentaPDF');
+
 });
 
 
@@ -116,6 +124,9 @@ Route::controller(PagoController::class)->group(function () {
 
     // DELETE METHOD
     Route::delete('/pagos/destroy/{id}', 'destroy')->middleware(['auth', 'verified'])->name('pago.destroy');
+
+    Route::get('/pagos/downloadFactura/{id}', 'downloadFactura')->middleware(['auth', 'verified'])->name('pago.downloadFactura');
+
 });
 
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cliente', function (Blueprint $table) {
             $table->id('id_cliente');
+            $table->string('codclie');
             $table->string('nombre');
             $table->string('dui', 10);
             $table->string('telefono', 15);

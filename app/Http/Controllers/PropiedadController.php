@@ -51,11 +51,15 @@ class PropiedadController extends Controller
             // Validación
             $rules = [
                 'area_terreno' => 'required|regex:/^\d{1,3}(,\d{3})*(\.\d+)?$/',
+                'poligono' => 'required',
+                'lote' => 'required',
                 'precio_vrs' => 'required|regex:/^\d{1,3}(,\d{3})*(\.\d+)?$/',
             ];
             
             $messages = [
                 'area_terreno.required' => 'El área del terreno es obligatorio.',
+                'poligono.required' => 'El poligono del terreno es obligatorio.',
+                'lote.required' => 'El lote del terreno es obligatorio.',
                 'area_terreno.regex' => 'El formato del área del terreno no es válido.',
                 'precio_vrs.required' => 'El precio por VRS² es obligatorio.',
                 'precio_vrs.regex' => 'El formato del precio por VRS² no es válido.',
@@ -75,20 +79,26 @@ class PropiedadController extends Controller
             // $areaTerreno = $request->input('area_terreno');
             // $precioPorVRS = $request->input('precio_vrs');
 
+            $poligono = $request->input('poligono');
+            $lote = $request->input('lote');
+
             $areaTerreno = str_replace(',', '', $request->input('area_terreno'));
             $precioPorVRS = str_replace(',', '', $request->input('precio_vrs'));
+            $prima = str_replace(',', '', $request->input('prima_efectivo'));
             
             $precioTotal = $areaTerreno * $precioPorVRS;
-            $primaEnEfectivo = $precioTotal * $porcentajePrima;
-            $montoAFinanciar = $precioTotal - $primaEnEfectivo;
-            $ingresoRequerido = $precioTotal / 30;  // Cálculo del ingreso requerido
+           // $primaEnEfectivo = $precioTotal * $porcentajePrima;
+            $montoAFinanciar = $precioTotal - $prima;
+            $ingresoRequerido = $precioTotal / 35;  // Cálculo del ingreso requerido
     
             // Creación de la propiedad
             $propiedad = new Propiedad();
+            $propiedad->poligono = $poligono;
+            $propiedad->lote = $lote;
             $propiedad->areaTerreno = $areaTerreno;
             $propiedad->precioPorVRS = $precioPorVRS;
             $propiedad->precioTotal = $precioTotal;
-            $propiedad->primaEnEfectivo = $primaEnEfectivo;
+            $propiedad->primaEnEfectivo = $prima;
             $propiedad->montoAFinanciar = $montoAFinanciar;
             $propiedad->ingresoRequerido = $ingresoRequerido;
             $propiedad->estado = $request->input('estado');
@@ -139,11 +149,15 @@ class PropiedadController extends Controller
             // Validación
             $rules = [
                 'area_terreno' => 'required|regex:/^\d{1,3}(,\d{3})*(\.\d+)?$/',
+                'poligono' => 'required',
+                'lote' => 'required',
                 'precio_vrs' => 'required|regex:/^\d{1,3}(,\d{3})*(\.\d+)?$/',
             ];
             
             $messages = [
                 'area_terreno.required' => 'El área del terreno es obligatoria.',
+                'poligono.required' => 'El poligono del terreno es obligatorio.',
+                'lote.required' => 'El lote del terreno es obligatorio.',
                 'area_terreno.regex' => 'El formato del área del terreno no es válido.',
                 'precio_vrs.required' => 'El precio por VRS² es obligatorio.',
                 'precio_vrs.regex' => 'El formato del precio por VRS² no es válido.',
@@ -159,6 +173,8 @@ class PropiedadController extends Controller
             }
     
             // Cálculos
+            $poligono = $request->input('poligono');
+            $lote = $request->input('lote');
             $areaTerreno = str_replace(',', '', $request->input('area_terreno'));
             $precioPorVRS = str_replace(',', '', $request->input('precio_vrs'));
     
@@ -173,7 +189,8 @@ class PropiedadController extends Controller
             if (!$propiedad) {
                 return redirect()->back()->with('error', 'Ha ocurrido un error. No se pudo realizar la operación.');
             }
-    
+            $propiedad->poligono = $poligono;
+            $propiedad->lote = $lote;
             $propiedad->areaTerreno = $areaTerreno;
             $propiedad->precioPorVRS = $precioPorVRS;
             $propiedad->precioTotal = $precioTotal;

@@ -18,7 +18,10 @@ return new class extends Migration
             $table->decimal('montoPago', 10, 2);
             $table->decimal('monto_mora', 10, 2);
             $table->decimal('monto_total', 10, 2);
+            $table->string('metodo_pago')->nullable();
+            $table->string('numero_cuenta')->nullable();
             $table->string('descripcion');
+            
             $table->timestamps();
         
             $table->foreign('id_pago')->references('id_pago')->on('pago')->onDelete('cascade')->onUpdate('cascade');

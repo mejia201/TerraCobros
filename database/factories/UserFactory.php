@@ -68,9 +68,21 @@ class UserFactory extends Factory
         return $this->state([
             'name' => 'Invitado',
             'email' => 'invitado@cobros.com',
-            'password' => Hash::make('guest123'),
+            'password' => Hash::make('invitado123'),
         ]);
     }
 
+
+    /**
+     * Estado personalizado para un usuario vendedor.
+     */
+    public function vendedor(): Factory
+    {
+        return $this->state([
+            'name' => 'Vendedor',
+            'email' => 'vendedor1@cobros.com',
+            'password' => Hash::make('vendedor123'),
+        ]);
+    }
 
 }

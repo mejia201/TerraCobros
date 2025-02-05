@@ -183,10 +183,10 @@
                                 @enderror
                             </div>
                 
-                            <h4 class="mt-4 mb-3 fw-bold">Datos de Reservación</h4>
-                            <hr>
+                            {{-- <h4 class="mt-4 mb-3 fw-bold">Datos de Reservación</h4>
+                            <hr> --}}
                             
-                            <div class="form-group col-md-4 mt-2">
+                            {{-- <div class="form-group col-md-4 mt-2">
                                 <label for="valor_reserva">Valor de la Reserva:</label>
                                 <input type="text" class="form-control @error('valor_reserva') is-invalid @enderror" name="valor_reserva" id="valor_reserva" value="{{$cliente->valor_reserva}}">
                                 @error('valor_reserva')
@@ -234,7 +234,7 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
     
                         </div>
                     </div>

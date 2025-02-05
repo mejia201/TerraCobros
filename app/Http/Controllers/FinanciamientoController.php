@@ -36,8 +36,10 @@ class FinanciamientoController extends Controller
     {
         try {
 
-            $clientes = Cliente::pluck('nombre', 'id_cliente');
-            $propiedades = Propiedad::where('estado', 'D')->get(); 
+            $clientes = Cliente::all();
+            // $propiedades = Propiedad::where('estado', 'D')->get(); 
+            $propiedades = Propiedad::all(); 
+
 
 
 
@@ -50,29 +52,79 @@ class FinanciamientoController extends Controller
     }
 
 
-    public function obtenerOpcionesFinanciamiento(Request $request)
-    {
-        $propiedad = Propiedad::find($request->id_propiedad);
-        $montoAFinanciar = $propiedad->montoAFinanciar;
-        $tasaInteresAnual = 12;
-        $tasaInteresMensual = $tasaInteresAnual / 12 / 100;
 
-        $opciones = [];
 
-        for ($plazoAnos = 1; $plazoAnos <= 7; $plazoAnos++) {
-            $numeroCuotas = $plazoAnos * 12;
-            $pagoMensual = ($montoAFinanciar * $tasaInteresMensual) / (1 - pow((1 + $tasaInteresMensual), -$numeroCuotas));
+//     public function obtenerOpcionesFinanciamiento(Request $request)
+//     {
+//     $propiedad = Propiedad::find($request->id_propiedad);
+//     $montoAFinanciar = $propiedad->montoAFinanciar;
+//     $tasaInteresAnual = 12;
+//     $tasaInteresMensual = $tasaInteresAnual / 12 / 100;
 
-            $opciones[] = [
-                'plazoAnos' => $plazoAnos,
-                'pagoMensual' => round($pagoMensual, 2),
-                'numeroCuotas' => $numeroCuotas,
-                'tasaInteres' => $tasaInteresAnual
-            ];
-        }
+//     $opciones = [];
 
-        return response()->json($opciones);
+//     for ($plazoAnos = 1; $plazoAnos <= 7; $plazoAnos++) {
+//         $numeroCuotas = $plazoAnos * 12;
+//         $pagoMensual = ($montoAFinanciar * $tasaInteresMensual) / (1 - pow((1 + $tasaInteresMensual), -$numeroCuotas));
+
+//         // Calcular el monto total que se pagaría en el plazo
+//         $montoTotal = $pagoMensual * $numeroCuotas;
+
+//         // Verificar que el monto total no exceda el monto a financiar
+//         if ($montoTotal > $montoAFinanciar) {
+//             // Ajustar el pago mensual si es necesario para no exceder el monto a financiar
+//             $pagoMensual = $montoAFinanciar / $numeroCuotas;
+//         }
+
+//         // Añadir la opción con el pago mensual ajustado
+//         $opciones[] = [
+//             'plazoAnos' => $plazoAnos,
+//             'pagoMensual' => round($pagoMensual, 2),
+//             'numeroCuotas' => $numeroCuotas,
+//             'tasaInteres' => $tasaInteresAnual
+//         ];
+//     }
+
+//     return response()->json($opciones);
+// }
+
+
+public function obtenerOpcionesFinanciamiento(Request $request)
+{
+    $propiedad = Propiedad::find($request->id_propiedad);
+    $montoAFinanciar = $propiedad->montoAFinanciar;
+
+    // Valores fijos para cada plazo en años
+    $factores = [
+        1 => 88.85,
+        2 => 47.073,
+        3 => 33.1356,
+        4 => 26.3345,
+        5 => 22.244,
+        6 => 19.55,
+        7 => 17.65,
+        8 => 16.253,
+        9 => 15.185,
+        10 => 14.35
+    ];
+
+    $opciones = [];
+
+    foreach ($factores as $plazoAnos => $factor) {
+        $numeroCuotas = $plazoAnos * 12;
+        $pagoMensual = ($montoAFinanciar * $factor) / 1000;
+
+        $opciones[] = [
+            'plazoAnos' => $plazoAnos,
+            'pagoMensual' => round($pagoMensual, 2),
+            'numeroCuotas' => $numeroCuotas
+        ];
     }
+
+    return response()->json($opciones);
+}
+
+
 
     /**
      * Store a newly created resource in storage.

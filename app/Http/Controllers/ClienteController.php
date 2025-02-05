@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Financiamiento;
 use App\Models\Informacion_laboral;
 use App\Models\Referencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ClienteController extends Controller
 {
@@ -92,10 +94,36 @@ class ClienteController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
+
+             // Generar el codclie
+                $nombre = $request->input('nombre');
+                $iniciales = collect(explode(' ', $nombre))
+                    ->map(fn($palabra) => strtoupper($palabra[0]))
+                    ->join('');
+
+                // Obtener el último código generado (independientemente de las iniciales)
+                $ultimoCodclie = Cliente::orderBy('id_cliente', 'desc') 
+                    ->pluck('codclie')
+                    ->first();
+
+                // Determinar el nuevo correlativo
+                $nuevoCorrelativo = 1;
+                if ($ultimoCodclie) {
+                    // Extraer el número del último código
+                    preg_match('/(\d+)$/', $ultimoCodclie, $matches);
+                    if (isset($matches[1])) {
+                        $nuevoCorrelativo = intval($matches[1]) + 1;
+                    }
+                }
+
+                // Formatear el código final
+                $codclie = "PJ-$iniciales-" . str_pad($nuevoCorrelativo, 3, '0', STR_PAD_LEFT);
+
     
             // Creación del cliente
             $cliente = new Cliente();
-            $cliente->nombre = $request->input('nombre');
+            $cliente->codclie = $codclie;
+            $cliente->nombre = $nombre;
             $cliente->dui = $request->input('dui');
             $cliente->telefono = $request->input('telefono');
             $cliente->email = $request->input('email');
@@ -109,11 +137,11 @@ class ClienteController extends Controller
             $cliente->estatus = $request->input('estatus');
             $cliente->medio_enterado = $request->input('medio_enterado');
             $cliente->tipo_cliente = $request->input('tipo_cliente');
-            $cliente->valor_reserva = $request->input('valor_reserva');
-            $cliente->fecha_reserva = $request->input('fecha_reserva');
-            $cliente->precio_venta = $request->input('precio_venta');
-            $cliente->prima = $request->input('prima');
-            $cliente->valor_financiado = $request->input('valor_financiado');
+            // $cliente->valor_reserva = $request->input('valor_reserva');
+            // $cliente->fecha_reserva = $request->input('fecha_reserva');
+            // $cliente->precio_venta = $request->input('precio_venta');
+            // $cliente->prima = $request->input('prima');
+            // $cliente->valor_financiado = $request->input('valor_financiado');
             $cliente->save();
 
 
@@ -247,11 +275,11 @@ class ClienteController extends Controller
             $cliente->estatus = $request->input('estatus');
             $cliente->medio_enterado = $request->input('medio_enterado');
             $cliente->tipo_cliente = $request->input('tipo_cliente');
-            $cliente->valor_reserva = $request->input('valor_reserva');
-            $cliente->fecha_reserva = $request->input('fecha_reserva');
-            $cliente->precio_venta = $request->input('precio_venta');
-            $cliente->prima = $request->input('prima');
-            $cliente->valor_financiado = $request->input('valor_financiado');
+            // $cliente->valor_reserva = $request->input('valor_reserva');
+            // $cliente->fecha_reserva = $request->input('fecha_reserva');
+            // $cliente->precio_venta = $request->input('precio_venta');
+            // $cliente->prima = $request->input('prima');
+            // $cliente->valor_financiado = $request->input('valor_financiado');
             $cliente->save();
     
             // Actualizar la información laboral
@@ -310,4 +338,90 @@ class ClienteController extends Controller
                 return redirect()->route('cliente.index')->with('error', 'Sucedió un error al intentar eliminar el registro del cliente.');
         }
     }
+
+
+
+// public function descargarEstadoCuentaPDF($id)
+// {
+//     try {
+
+//         $cliente = Cliente::with(['financiamientos.propiedad', 'financiamientos.pagos.detallePagos'])->findOrFail($id);
+//         $financiamientos = $cliente->financiamientos;
+
+
+//         $estadoCuenta = $financiamientos->map(function ($financiamiento) {
+//             $pagos = $financiamiento->pagos->map(function ($pago) {
+//                 return [
+//                     'pago' => $pago,
+//                     'detalle' => $pago->detallePagos,
+//                 ];
+//             });
+        
+//             return [
+//                 'financiamiento' => $financiamiento,
+//                 'propiedad' => $financiamiento->propiedad,
+//                 'pagos' => $pagos,
+//                 'montoPendiente' => $financiamiento->montoPendiente,
+//             ];
+//         });
+
+        
+
+//         // Preparar los datos para la vista del PDF
+//         $data = [
+//             'cliente' => $cliente,
+//             'estadoCuenta' => $estadoCuenta,
+//         ];
+
+//         // Generar el PDF con DomPDF
+//         $pdf = PDF::loadView('pdf.estado_cuenta', $data);
+
+//         // Guardar el archivo PDF en una carpeta pública
+//         $pdfPath = storage_path('app/public/estado_cuentas/estado_cuenta_' . $cliente->codclie . '.pdf');
+//         $pdf->save($pdfPath);
+
+//         // Forzar la descarga del PDF
+//         return response()->download($pdfPath);
+
+//     } catch (\Exception $e) {
+//         Log::error('Error al generar el estado de cuenta en PDF: ' . $e->getMessage());
+//         return redirect()->route('cliente.index')->with('error', 'Sucedió un error al generar el estado de cuenta.');
+//     }
+// }
+
+
+public function descargarEstadoCuentaPDF($id_cliente, $id_financiamiento)
+{
+    try {
+        // Obtener el cliente y financiamiento específico
+        $cliente = Cliente::findOrFail($id_cliente);
+        $financiamiento = Financiamiento::with(['propiedad', 'pagos.detallePagos'])
+            ->where('id_cliente', $id_cliente)
+            ->findOrFail($id_financiamiento);
+
+        // Preparar los datos para la vista del PDF
+        $data = [
+            'cliente' => $cliente,
+            'financiamiento' => $financiamiento,
+            'propiedad' => $financiamiento->propiedad,
+            'pagos' => $financiamiento->pagos,
+            'montoPendiente' => $financiamiento->montoPendiente,
+        ];
+
+        // Generar el PDF con DomPDF
+        $pdf = PDF::loadView('pdf.estado_cuenta', $data);
+
+        // Guardar el archivo PDF en una carpeta pública
+        $pdfPath = storage_path('app/public/estado_cuentas/estado_cuenta_' . $cliente->codclie . '_' . $financiamiento->propiedad->id_propiedad . '.pdf');
+        $pdf->save($pdfPath);
+
+        // Forzar la descarga del PDF
+        return response()->download($pdfPath);
+
+    } catch (\Exception $e) {
+        Log::error('Error al generar el estado de cuenta en PDF: ' . $e->getMessage());
+        return redirect()->route('cliente.index')->with('error', 'Sucedió un error al generar el estado de cuenta.');
+    }
+}
+
 }

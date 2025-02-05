@@ -19,6 +19,7 @@
                     <table id="miTabla" class="table text-nowrap mb-0 align-middle table-striped table-bordered">
                         <thead class="text-dark fs-4">
                             <tr>
+                                <th class="border-bottom-0"><b>Polígono</b></th>
                                 <th class="border-bottom-0"><b>Lote</b></th>
                                 <th class="border-bottom-0"><b>Area Terreno</b></th>
                                 <th class="border-bottom-0"><b>Precio Por VRS</b></th>
@@ -31,19 +32,31 @@
                         <tbody>
                             @foreach ($propiedades as $propiedad)
                                 <tr>
-                                    <td class="border-bottom-0">{{ $propiedad->id_propiedad }}</td>
+                                    <td class="border-bottom-0">{{ $propiedad->poligono }}</td>
+                                    <td class="border-bottom-0">{{ $propiedad->lote }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->areaTerreno, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioPorVRS, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->precioTotal, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">{{ number_format($propiedad->montoAFinanciar, 2, '.', ',') }}</td>
                                     <td class="border-bottom-0">
                                         @if($propiedad->estado == 'R')
-                                            Reservado
-                                        @else
+                                            Reserva
+                                        @elseif($propiedad->estado == 'D')
                                             Disponible
+                                        @elseif($propiedad->estado == 'P')
+                                            Prima
+                                        @elseif($propiedad->estado == 'X')
+                                            Renunciado
+                                        @elseif($propiedad->estado == 'Y')
+                                            Recuperado
+                                        @elseif($propiedad->estado == 'F')
+                                            Financiado
+                                        @else
+                                            Estado desconocido
                                         @endif
-                                    </td>  
-                                  
+                                    </td>
+                                    
+                              
                                     <td class="d-flex gap-1 justify-content-center">
                                         <a href="{{ route('propiedad.edit', $propiedad->id_propiedad) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>

@@ -128,6 +128,26 @@
                                 @role('invitado')
 
                                 <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/clientes">
+                                        <span>
+                                            <i class="fa-solid fa-users" style="font-size: 20px;"></i>
+                                        </span>
+                                        <span class="hide-menu">Clientes</span>
+                                    </a>
+                                </li>
+
+                                
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/financiamientos">
+                                        <span>
+                                            <i class="fa-solid fa-briefcase" style="font-size: 20px;"></i>
+                                     
+                                        </span>
+                                        <span class="hide-menu">Financiamientos</span>
+                                    </a>
+                                </li>
+
+                                <li class="{{ 'sidebar-item' }}">
                                     <a class="sidebar-link" href="/pagos">
                                         <span>
                                      <i class="fa-solid fa-money-check-dollar" style="font-size: 20px;"></i>
@@ -138,6 +158,33 @@
                                 </li>
                                 
                                 @endrole
+
+
+
+                                @role('vendedor')
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/clientes">
+                                        <span>
+                                            <i class="fa-solid fa-users" style="font-size: 20px;"></i>
+                                        </span>
+                                        <span class="hide-menu">Clientes</span>
+                                    </a>
+                                </li>
+
+
+                                <li class="{{ 'sidebar-item' }}">
+                                    <a class="sidebar-link" href="/pagos">
+                                        <span>
+                                     <i class="fa-solid fa-money-check-dollar" style="font-size: 20px;"></i>
+                               
+                                        </span>
+                                        <span class="hide-menu">Pagos</span>
+                                    </a>
+                                </li>
+                                
+                                @endrole
+                         
                          
                          
                     </ul>

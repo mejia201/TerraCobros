@@ -35,7 +35,7 @@
                                 <tr>
                                     <td class="border-bottom-0">{{ $financiamiento->cliente->nombre }}</td>
                                     <td class="border-bottom-0">
-                                        Lote: {{ $financiamiento->propiedad->id_propiedad }} - 
+                                        Póligono: {{ $financiamiento->propiedad->poligono }}, Lote: {{ $financiamiento->propiedad->lote }}   |
                                         Área: {{ number_format( $financiamiento->propiedad->areaTerreno, 2, '.', ',') }} VRS²
                                     </td>
                                     <td class="border-bottom-0">{{ $financiamiento->plazoAnos }}</td>
@@ -46,6 +46,9 @@
                                     <td class="border-bottom-0">{{ \Carbon\Carbon::parse($financiamiento->fechaInicio)->format('d-m-Y') }}</td>
 
                                     <td class="d-flex gap-1 justify-content-center">
+
+                                        @role('admin')
+
                                         <a href="{{ route('financiamiento.edit', $financiamiento->id_financiamiento) }}" class="btn btn-primary">
                                             <i class="ti ti-pencil"></i>
                                         </a>
@@ -56,6 +59,18 @@
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
+
+                                        @endrole
+
+
+                                        @role('invitado')
+                                        <a href="{{ route('financiamiento.edit', $financiamiento->id_financiamiento) }}" class="btn btn-primary">
+                                            <i class="ti ti-pencil"></i>
+                                        </a>
+
+                                        @endrole
+
+                                       
                                     </td>
                                 </tr>
                             @endforeach

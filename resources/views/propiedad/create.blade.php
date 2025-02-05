@@ -11,6 +11,26 @@
             @csrf
 
             <div class="form-group col-md-4">
+                <label for="poligono">Poligono:</label>
+                <input type="text" class="form-control @error('poligono') is-invalid @enderror" name="poligono" id="poligono" value="{{ old('poligono') }}" required>
+                @error('poligono')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="lote">Lote:</label>
+                <input type="text" class="form-control @error('lote') is-invalid @enderror" name="lote" id="lote" value="{{ old('lote') }}" required>
+                @error('lote')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-group col-md-4">
                 <label for="area_terreno">Área del Terreno (VRS²):</label>
                 <input type="text" class="form-control @error('area_terreno') is-invalid @enderror" name="area_terreno" id="area_terreno" value="{{ old('area_terreno') }}" required>
                 @error('area_terreno')
@@ -20,10 +40,21 @@
                 @enderror
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6 mt-2">
                 <label for="precio_vrs">Precio por VRS²:</label>
                 <input type="text" class="form-control @error('precio_vrs') is-invalid @enderror" name="precio_vrs" id="precio_vrs" value="{{ old('precio_vrs') }}" required>
                 @error('precio_vrs')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+
+            <div class="form-group col-md-6 mt-2">
+                <label for="prima_efectivo">Prima:</label>
+                <input type="text" class="form-control @error('prima_efectivo') is-invalid @enderror" name="prima_efectivo" id="prima_efectivo" value="{{ old('prima_efectivo') }}" required>
+                @error('prima_efectivo')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -40,15 +71,6 @@
                 @enderror
             </div>
 
-            <div class="form-group col-md-6 mt-2">
-                <label for="prima_efectivo">Prima en Efectivo:</label>
-                <input type="text" class="form-control @error('prima_efectivo') is-invalid @enderror" name="prima_efectivo" id="prima_efectivo" value="{{ old('prima_efectivo') }}" required>
-                @error('prima_efectivo')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
 
             <div class="form-group col-md-6 mt-2">
                 <label for="monto_financiar">Monto a Financiar:</label>
@@ -70,12 +92,17 @@
                 @enderror
             </div> --}}
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-4 mt-2">
                 <label for="estado">Estado:</label>
                 <select class="form-control @error('estado') is-invalid @enderror" name="estado" id="estado" required>
                     <option value="" disabled selected>Seleccione un estado</option>
-                    <option value="R">Reservado</option>
+                    <option value="R">Reserva</option>
                     <option value="D">Disponible</option>
+                    <option value="P">Prima</option>
+                    <option value="X">Renunciado</option>
+                    <option value="Y">Recuperado</option>
+                    <option value="F">Financiado</option>
+
                 </select>
                 @error('estado')
                     <div class="invalid-feedback">

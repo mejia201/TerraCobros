@@ -19,7 +19,7 @@
     }
     </style>
         
-    <div class="card p-4 mt-3 mb-5" style="background-color: #f8f9fa; border-left: 5px solid #3498db; animation: fadeInDown 1s;">
+    <div class="card p-2 mt-3 mb-5" style="background-color: #f8f9fa; border-left: 5px solid #3498db; animation: fadeInDown 1s;">
         <div class="card-body d-flex align-items-center"> 
             <div>
                 <h4 class="mb-0">Bienvenido, <strong>{{ Auth::user()->name }}</strong></h4>

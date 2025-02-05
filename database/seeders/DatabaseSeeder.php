@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
      // Crear roles si no existen
      $roleAdmin = Role::firstOrCreate(['name' => 'admin']);
      $roleInvitado = Role::firstOrCreate(['name' => 'invitado']);
+     $roleVendedor = Role::firstOrCreate(['name' => 'vendedor']);
+
 
      // Crear usuarios y asignar roles
      $userAdmin = User::factory()->administrador()->create();
@@ -28,6 +30,10 @@ class DatabaseSeeder extends Seeder
 
      $userGuest = User::factory()->invitado()->create();
      $userGuest->assignRole($roleInvitado);
+
+
+     $userVendedor = User::factory()->vendedor()->create();
+     $userVendedor->assignRole($roleVendedor);
 
 
 

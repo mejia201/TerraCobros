@@ -13,6 +13,8 @@ class Propiedad extends Model
     protected $primaryKey = 'id_propiedad';
 
     protected $fillable = [
+        'poligono',
+        'lote',
         'areaTerreno',
         'precioPorVRS',
         'precioTotal',

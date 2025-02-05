@@ -13,6 +13,7 @@ class Cliente extends Model
     protected $primaryKey = 'id_cliente';
 
     protected $fillable = [
+        'codclie',
         'nombre',
         'dui',
         'telefono',

@@ -19,6 +19,8 @@ class DetallePago extends Model
         'monto_mora',
         'monto_total',
         'descripcion',
+        'metodo_pago',
+        'numero_cuenta'
     ];
 
     public function pago()

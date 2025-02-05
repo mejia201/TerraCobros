@@ -17,8 +17,10 @@
                 <select class="form-control @error('id_cliente') is-invalid @enderror" name="id_cliente" id="id_cliente" required>
                     <option value="" disabled selected>Seleccionar Cliente</option>
                 
-                    @foreach($clientes as $id_cliente => $nombre )
-                        <option value="{{ $id_cliente }}">{{ $nombre }}</option>
+                    @foreach($clientes as $cliente)
+                    <option value="{{ $cliente->id_cliente }}">
+                        Código Cliente: {{ $cliente->codclie }} | Nombre: {{ $cliente->nombre }} 
+                        </option>
                     @endforeach
 
                 
@@ -37,7 +39,30 @@
                     <option value="" disabled selected>Seleccionar Propiedad</option>
                     @foreach($propiedades as $propiedad)
                         <option value="{{ $propiedad->id_propiedad }}">
-                            Lote: {{$propiedad->id_propiedad}} - Área: {{ $propiedad->areaTerreno }} VRS² - Precio Total: ${{ $propiedad->precioTotal }} - Estado: {{ $propiedad->estado == 'R' ? 'Reservado' : 'Disponible' }}
+                            Póligono: {{$propiedad->poligono}}, Lote: {{$propiedad->lote}} | Área: {{ $propiedad->areaTerreno }} VRS² | Precio Total: ${{ $propiedad->precioTotal }} 
+                            | Estado: 
+                            @switch($propiedad->estado)
+                                @case('R')
+                                    Reservado
+                                    @break
+                                @case('D')
+                                    Disponible
+                                    @break
+                                @case('P')
+                                    Prima
+                                    @break
+                                @case('X')
+                                    Renunciado
+                                    @break
+                                @case('Y')
+                                    Recuperado
+                                    @break
+                                @case('F')
+                                    Financiado
+                                    @break
+                                @default
+                                    Desconocido
+                            @endswitch
                         </option>
                     @endforeach
                 </select>
@@ -66,7 +91,7 @@
             <!-- Campos que se llenarán con la opción seleccionada -->
             <div class="form-group col-md-6 mt-3">
                 <label for="tasaInteres">Tasa de Interés (%):</label>
-                <input type="number" step="0.01" class="form-control" name="tasaInteres" id="tasaInteres" required>
+                <input type="number" step="0.01" class="form-control" name="tasaInteres" id="tasaInteres" value="12" required readonly>
             </div>
 
             <div class="form-group col-md-6 mt-3">
@@ -137,7 +162,6 @@
     
         $(document).on('click', '.seleccionar-opcion', function() {
             var opcion = $(this).data('opcion');
-            $('#tasaInteres').val(opcion.tasaInteres);
             $('#plazoAnos').val(opcion.plazoAnos);
             $('#pagoMensual').val(opcion.pagoMensual);
             $('#numeroCuotas').val(opcion.numeroCuotas);

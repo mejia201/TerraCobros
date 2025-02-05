@@ -10,6 +10,26 @@
                 @method('PUT')
 
                 <div class="form-group col-md-4">
+                    <label for="poligono">Polígono:</label>
+                    <input type="text" class="form-control {{ $errors->has('poligono') ? 'is-invalid' : '' }}" name="poligono" id="poligono" value="{{$propiedad->poligono }}"required>
+                    @if ($errors->has('poligono'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('poligono') }}
+                        </div>
+                    @endif
+                </div>
+    
+                <div class="form-group col-md-4">
+                    <label for="lote">Lote:</label>
+                    <input type="text" class="form-control {{ $errors->has('lote') ? 'is-invalid' : '' }}" name="lote" id="lote" value="{{$propiedad->lote }}"required>
+                    @if ($errors->has('lote'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('lote') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group col-md-4">
                     <label for="area_terreno">Área del Terreno: </label>
                     <input type="text" class="form-control {{ $errors->has('area_terreno') ? 'is-invalid' : '' }}"
                         name="area_terreno" id="area_terreno" value="{{ number_format($propiedad->areaTerreno, 2, '.', ',') }}"  required>
@@ -42,6 +62,7 @@
                     @endif
                 </div>
 
+    
                 <div class="form-group col-md-4 mt-2">
                     <label for="prima_efectivo">Prima en Efectivo: </label>
                     <input type="text" class="form-control {{ $errors->has('prima_efectivo') ? 'is-invalid' : '' }}"
@@ -80,7 +101,12 @@
                     <select class="form-control {{ $errors->has('estado') ? 'is-invalid' : '' }}" name="estado" id="estado" required>
                         <option value="D" {{ $propiedad->estado == 'D' ? 'selected' : '' }}>Disponible</option>
                         <option value="R" {{ $propiedad->estado == 'R' ? 'selected' : '' }}>Reservado</option>
+                        <option value="P" {{ $propiedad->estado == 'P' ? 'selected' : '' }}>Prima</option>
+                        <option value="X" {{ $propiedad->estado == 'X' ? 'selected' : '' }}>Renunciado</option>
+                        <option value="Y" {{ $propiedad->estado == 'Y' ? 'selected' : '' }}>Recuperado</option>
+                        <option value="F" {{ $propiedad->estado == 'F' ? 'selected' : '' }}>Financiado</option>
                     </select>
+                    
                     @if ($errors->has('estado'))
                         <div class="invalid-feedback">
                             {{ $errors->first('estado') }}

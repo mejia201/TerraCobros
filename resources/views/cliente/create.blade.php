@@ -180,7 +180,7 @@
                             @enderror
                         </div>
             
-                        <h4 class="mt-4 mb-3 fw-bold">Datos de Reservación</h4>
+                        {{-- <h4 class="mt-4 mb-3 fw-bold">Datos de Reservación</h4>
                         <hr>
                         
                         <div class="form-group col-md-4 mt-2">
@@ -211,9 +211,9 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
             
-                        <div class="form-group col-md-4 mt-2">
+                        {{-- <div class="form-group col-md-4 mt-2">
                             <label for="prima">Prima:</label>
                             <input type="text" class="form-control @error('prima') is-invalid @enderror" name="prima" id="prima">
                             @error('prima')
@@ -221,9 +221,9 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
 
-                        <div class="form-group col-md-4 mt-2">
+                        {{-- <div class="form-group col-md-4 mt-2">
                             <label for="valor_financiado">Valor Financiado:</label>
                             <input type="text" class="form-control @error('valor_financiado') is-invalid @enderror" name="valor_financiado" id="valor_financiado">
                             @error('valor_financiado')
@@ -231,7 +231,7 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
