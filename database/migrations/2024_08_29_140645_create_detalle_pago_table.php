@@ -15,9 +15,18 @@ return new class extends Migration
             $table->id('id_detalle_pago');
             $table->unsignedBigInteger('id_pago');
             $table->string('fechaPago');
-            $table->decimal('montoPago', 10, 2);
-            $table->decimal('monto_mora', 10, 2);
-            $table->decimal('monto_total', 10, 2);
+            //nuevo campo para almacenar el monto de la cuota
+            $table->decimal('montoCuota', 10, 2);
+
+            //seria como un subtotal del monto calculando la mora
+            $table->decimal('montoPorMora', 10, 2);
+
+            //el total en mora 
+            $table->decimal('moraAplicada', 10, 2);
+
+            //el monto total + la mora
+            $table->decimal('montoTotal', 10, 2);
+
             $table->string('metodo_pago')->nullable();
             $table->string('numero_cuenta')->nullable();
             $table->string('descripcion');

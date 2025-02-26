@@ -112,7 +112,8 @@ Route::controller(PagoController::class)->group(function () {
     Route::get('/pagos', 'index')->middleware(['auth', 'verified'])->name('pago.index');
     Route::get('/pagos/create', 'create')->middleware(['auth', 'verified'])->name('pago.create');
     Route::get('/pagos/edit/{id}', 'edit')->middleware(['auth', 'verified'])->name('pago.edit');
-    Route::get('/financiamientos/{id_financiamiento}/cuotas', [PagoController::class, 'getCuotasByFinanciamiento']);    
+    Route::get('/pagos/{id_financiamiento}/cuotas', 'getCuotasByFinanciamiento')->middleware(['auth', 'verified'])->name('pago.getCuotasByFinanciamiento');
+   
 
     // POST METHOD
     Route::post('/pagos/create', 'store')->middleware(['auth', 'verified'])->name('pago.store');

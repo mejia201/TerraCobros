@@ -31,10 +31,10 @@
                                 <tr>
                                     <td class="border-bottom-0">{{ $pago->nombre }}</td>
                                     <td class="border-bottom-0">{{ \Carbon\Carbon::parse($pago->fechaPago)->format('d-m-Y') }}</td>
-                                    <td class="border-bottom-0">{{ $pago->monto_total }}</td>
+                                    <td class="border-bottom-0">{{ $pago->montoTotal }}</td>
                                     <td class="border-bottom-0">{{ $pago->descripcion }}</td>
                                     <td class="border-bottom-0">
-                                        <a href="{{ route('pago.downloadFactura', $pago->id_pago) }}" class="btn btn-secondary">
+                                        <a href="{{ route('pago.downloadFactura', $pago->id_detalle_pago) }}" class="btn btn-secondary">
                                         <i class="fas fa-file-invoice"></i>  Descargar Factura
                                         </a>
 

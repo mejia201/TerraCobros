@@ -10,6 +10,8 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 class cobroMail extends Mailable
 {
@@ -68,19 +70,27 @@ class cobroMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
-    {
-        // return [];
-        // return [
-        //     new \Illuminate\Mail\Mailables\Attachment($this->pdfPath),
-        // ];
-
-        if (!Storage::exists($this->pdfPath)) {
-            return [];
-        }
+    // public function attachments(): array
+    // {
+    //     if (!Storage::exists($this->pdfPath)) {
+    //         return [];
+    //     }
     
-        return [
-            Attachment::fromPath(storage_path("app/{$this->pdfPath}"))
-        ];
+    //     return [
+    //         Attachment::fromPath(storage_path("app/public/facturas/{$this->pdfPath}"))
+    //     ];
+    // }
+
+    public function attachments(): array
+{
+    if (!file_exists($this->pdfPath)) {
+        Log::error("El archivo PDF no existe en la ruta: " . $this->pdfPath);
+        return [];
     }
+
+    return [
+        Attachment::fromPath($this->pdfPath),
+    ];
+}
+
 }

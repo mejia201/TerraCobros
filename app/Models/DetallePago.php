@@ -15,9 +15,10 @@ class DetallePago extends Model
     protected $fillable = [
         'id_pago',
         'fechaPago',
-        'montoPago',
-        'monto_mora',
-        'monto_total',
+        'montoCuota',
+        'montoPorMora',
+        'moraAplicada',
+        'montoTotal',
         'descripcion',
         'metodo_pago',
         'numero_cuenta'

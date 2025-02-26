@@ -10,10 +10,10 @@
         <form action="{{ route('pago.store') }}" method="post" class="row needs-validation" novalidate>
             @csrf
 
-            <h4 class="mt-4 mb-3 fw-bold">Carga de datos de la cuota</h4>
+            <h4 class="mt-4 mb-3 fw-bold">Carga de datos del financiamiento</h4>
             <hr>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="id_financiamiento">Financiamiento:</label>
                 <select class="form-control @error('id_financiamiento') is-invalid @enderror" name="id_financiamiento" id="id_financiamiento" required>
                     <option value="" disabled selected>Seleccione un financiamiento</option>
@@ -29,26 +29,9 @@
             </div>
 
             <div class="form-group col-md-4">
-                <label for="cuota">Cuota:</label>
-                <select class="form-control" name="cuota" id="cuota" required>
-                    <option value="" disabled selected>Seleccione una cuota</option>
-                </select>
-            </div>
-
-            <div class="form-group col-md-4">
-                <label for="fechaPagoEsperada">Fecha de Pago Esperada:</label>
-                <input type="date" class="form-control @error('fechaPagoEsperada') is-invalid @enderror" name="fechaPagoEsperada" id="fechaPagoEsperada" readonly>
-                @error('fechaPagoEsperada')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            <div class="form-group col-md-4 mt-2">
-                <label for="fechaInicio">Fecha de Inicio del financiamiento:</label>
-                <input type="date" class="form-control @error('fechaInicio') is-invalid @enderror" name="fechaInicio" id="fechaInicio" readonly>
-                @error('fechaInicio')
+                <label for="data-cuota">Monto de la cuota:</label>
+                <input type="text" class="form-control @error('data-cuota') is-invalid @enderror" name="data-cuota" id="data-cuota"  required readonly> 
+                @error('data-cuota')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -56,60 +39,49 @@
             </div>
 
 
-            <div class="form-group col-md-4 mt-2">
-                <label for="montoPago">Monto del Pago:</label>
-                <input type="text" class="form-control @error('montoPago') is-invalid @enderror" name="montoPago" id="montoPago"  required>
-                @error('montoPago')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+            <div class="form-group col-md-6 mt-4">
+                <button type="button" class="btn btn-primary" id="btnSeleccionarCuotas" disabled>Seleccionar Cuotas</button>
             </div>
-     
-       
-            <input type="hidden" name="montoMora" id="montoMora">
 
-
+            <div class="form-group col-md-12 mt-3">
+                <label>Cuotas Seleccionadas:</label>
+                <ul id="listaCuotasSeleccionadas" class="list-group"></ul>
+            </div>
 
             <h4 class="mt-5 mb-3 fw-bold">Datos del pago a realizar</h4>
             <hr>
 
-            <div class="form-group col-md-4 mt-2">
+            {{-- <div class="form-group col-md-3 mt-2">
                 <label for="fechaPago">Fecha del Pago:</label>
-                <input type="date" class="form-control @error('fechaPago') is-invalid @enderror" name="fechaPago" id="fechaPago" required>
-                @error('fechaPago')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <input type="date" class="form-control" name="fechaPago" id="fechaPago" value="{{ date('Y-m-d') }}" readonly>
+            </div> --}}
+
+            <div class="form-group col-md-3 mt-2">
+                <label for="fechaPago">Fecha del Pago:</label>
+                <input type="date" class="form-control" name="fechaPago" id="fechaPago">
+            </div>
+           
+
+            <div class="form-group col-md-3 mt-2">
+                <label for="montoPorMora">Monto adicional por retraso:</label>
+                <input type="text" class="form-control" name="montoPorMora" id="montoPorMora" readonly>
             </div>
 
-
-             <!-- Campo para porcentaje de mora -->
-             <div class="form-group col-md-4 mt-2" id="mora-container" style="display: none;">
-                <label for="porcentaje_mora">Porcentaje de Mora (%):</label>
-                <input type="number" class="form-control" name="porcentaje_mora" id="porcentaje_mora" value="0" step="0.01">
+            <div class="form-group col-md-3 mt-2">
+                <label for="moraAplicada">Mora aplicada (2%):</label>
+                <input type="text" class="form-control" name="moraAplicada" id="moraAplicada" readonly >
             </div>
 
-            <div class="form-group col-md-4 mt-2">
-                <label for="montoAdicional">Monto adicional por retraso:</label>
-                <input type="text" class="form-control" id="montoAdicional" readonly>
+            <div class="form-group col-md-3 mt-2">
+                <label for="montoTotal">Monto Total a Pagar:</label>
+                <input type="text" class="form-control" name="montoTotal" id="montoTotal" readonly >
             </div>
 
-            <div class="form-group col-md-4 mt-2">
-                <label for="diferencia">Monto total por mora:</label>
-                <input type="text" class="form-control" id="diferencia" readonly>
+            <div class="form-group col-md-12 mt-3">
+                <label for="descripcion_pago">Descripción del Pago:</label>
+                <textarea class="form-control" name="descripcion_pago" id="descripcion_pago" readonly></textarea>
             </div>
 
-            <!-- Total con mora -->
-            <div class="form-group col-md-4 mt-2">
-                <label for="monto_total">Monto Total a Pagar:</label>
-                <input type="text" class="form-control" name="monto_total" id="monto_total" style="background-color: rgb(241, 237, 237)" readonly>
-            </div>
-            
-            
-            
-            
             <div class="form-group col-md-4 mt-2">
                 <label for="metodo_pago">Método de Pago:</label>
                 <select class="form-control @error('metodo_pago') is-invalid @enderror" name="metodo_pago" id="metodo_pago" required>
@@ -138,156 +110,189 @@
                     </div>
                 @enderror
             </div>
+
+
+            <input type="hidden" name="cuotasSeleccionadas" id="cuotasSeleccionadas">
+
             
 
-              <!-- Mensaje de retraso -->
-              <div class="col-md-12 mt-2" id="retraso-container" style="display: none;">
-                <div class="alert alert-warning">
-                    El pago tiene un retraso de <span id="dias_retraso"></span> días. Se aplicará una mora del <span id="mora_aplicada"></span> %.
-                </div>
-            </div>
-
-    
             <div class="form-group col-md-12 mt-3 text-end">
                 <input type="submit" class="btn btn-primary" value="Registrar">
                 <a href="{{ route('pago.index') }}" class="btn btn-dark">Regresar</a>
             </div>
         </form>
+
     </div>
 </div>
 
-@endsection
+<!-- Modal de selección de cuotas -->
+<div class="modal fade" id="modalCuotas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCuotasLabel">Seleccionar Cuotas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
+            </div>
+            <div class="modal-body">
+                <ul id="listaCuotas" class="list-group"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmarCuotas">Confirmar</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+@endsection
 
 @section('AfterScript')
 <script>
-document.getElementById('id_financiamiento').addEventListener('change', function() {
-    var idFinanciamiento = this.value;
-    var cuotaSelect = document.getElementById('cuota');
-    var fechaPagoEsperada = document.getElementById('fechaPagoEsperada');
-    var monto = document.getElementById('montoPago');
 
-    // Limpiar el select de cuotas y el campo de fecha esperada
-    cuotaSelect.innerHTML = '<option value="" disabled selected>Seleccione una cuota</option>';
-    fechaPagoEsperada.value = '';
-    monto.value = '';
+document.addEventListener("DOMContentLoaded", function () {
+    var selectFinanciamiento = document.getElementById('id_financiamiento');
+    var btnSeleccionarCuotas = document.getElementById('btnSeleccionarCuotas');
 
-    // Hacer una solicitud AJAX para obtener las cuotas
-    if (idFinanciamiento) {
-        fetch('/financiamientos/' + idFinanciamiento + '/cuotas')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(function(cuota) {
-                    var option = document.createElement('option');
-                    option.value = cuota.cuota;
-                    option.text = 'Cuota ' + cuota.cuota;
+    selectFinanciamiento.addEventListener('change', function () {
+        if (this.value) {
+            btnSeleccionarCuotas.removeAttribute('disabled'); // Habilita el botón
+        } else {
+            btnSeleccionarCuotas.setAttribute('disabled', 'disabled'); // Lo deshabilita si no hay selección
+        }
+    });
+});
 
-                    // Parsear la fecha para que esté en el formato correcto yyyy-MM-dd
-                    var fechaEsperada = new Date(cuota.fechaPagoEsperada);
-                    var fechaFormateada = fechaEsperada.toISOString().split('T')[0];
-                    var montoCuota = cuota.montoPago;
-                    var fecha_inicio = cuota.fechaInicio;
+document.getElementById('btnSeleccionarCuotas').addEventListener('click', function() {
+    var idFinanciamiento = document.getElementById('id_financiamiento').value;
+    var listaCuotas = document.getElementById('listaCuotas');
+    var fechaSeleccionada = document.getElementById('fechaPago').value;
+    listaCuotas.innerHTML = ''; 
 
-                    option.setAttribute('data-fecha', fechaFormateada);
-                    option.setAttribute('data-monto', montoCuota);
-                    option.setAttribute('data-fechaInicio', fecha_inicio);
+    fetch('/pagos/' + idFinanciamiento + '/cuotas')
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                console.log("No hay cuotas disponibles.");
+                return;
+            }
 
-                    cuotaSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error:', error));
+            // console.log(data);
+           
+            let fechaPagoInput = new Date(fechaSeleccionada); // Fecha real de pago
+            let fechaReferencia = new Date(data[0].fechaPagoEsperada); // Fecha esperada de la primera cuota
+
+            data.forEach(function(cuota, index) {
+
+                var montoCuota = cuota.montoPago;
+                document.getElementById('data-cuota').value = montoCuota;
+
+                let fechaCuota = new Date(cuota.fechaPagoEsperada);
+                let diasMora = 0;
+
+                if (index === 0) { 
+                    // Primera cuota: Si se paga después de la fecha esperada, son 30 días de mora
+                    diasMora = fechaPagoInput > fechaCuota ? 30 : 0;
+                } else {
+                    // Cuotas siguientes: Contar los días desde la fecha esperada de la cuota anterior
+                    let diferenciaDias = Math.floor((fechaPagoInput - fechaReferencia) / (1000 * 60 * 60 * 24));
+                    diasMora = diferenciaDias > 0 ? diferenciaDias : 0;
+                }
+
+                fechaReferencia = fechaCuota; // Actualizar referencia para la siguiente cuota
+
+                var item = document.createElement('li');
+                item.classList.add('list-group-item');
+
+                var checkbox = `<input type="checkbox" class="cuota-checkbox" value="${cuota.id}" 
+                                    data-cuota="${cuota.cuota}" 
+                                    data-monto="${cuota.montoPago}" 
+                                    data-fecha="${cuota.fechaPagoEsperada}" 
+                                    data-dias="${diasMora}"> `;
+                item.innerHTML = checkbox + `Cuota ${cuota.cuota} - Monto: $${cuota.montoPago} (Días de mora: ${diasMora})`;
+                
+                listaCuotas.appendChild(item);
+            });
+
+        })
+        .catch(error => console.error("Error al obtener cuotas:", error));
+
+    $('#modalCuotas').modal('show');
+});
+
+
+
+
+document.getElementById('btnConfirmarCuotas').addEventListener('click', function() {
+    var checkboxes = document.querySelectorAll('.cuota-checkbox:checked');
+    var listaSeleccionadas = document.getElementById('listaCuotasSeleccionadas');
+    var montoTotalCuotas = 0;  
+    var totalDiasMora = 0;  
+    var descripcionPago = "";
+
+    listaSeleccionadas.innerHTML = ''; 
+
+    checkboxes.forEach(function(checkbox, index) {
+        var montoCuota = parseFloat(checkbox.dataset.monto);
+        var diasMora = parseInt(checkbox.dataset.dias);
+
+        totalDiasMora += diasMora; 
+        montoTotalCuotas += montoCuota; 
+
+        var item = document.createElement('li');
+        item.classList.add('list-group-item');
+        item.textContent = `Cuota ${checkbox.dataset.cuota} - Monto: $${montoCuota.toFixed(2)} (Días de mora: ${diasMora})`;
+        listaSeleccionadas.appendChild(item);
+
+        descripcionPago += `Cuota ${checkbox.dataset.cuota}`;
+        if (index !== checkboxes.length - 1) {
+            descripcionPago += ", ";
+        }
+    });
+
+    var montoCuotaReferencia = checkboxes.length > 0 ? parseFloat(checkboxes[0].dataset.monto) : 0;
+
+    if(totalDiasMora == 0){
+
+        moraBase = 0
+        moraTotal = 0
+        montoFinal = montoCuotaReferencia
+
+    }else{
+
+    // Calcular mora total basada en la suma de días de mora y el monto total de las cuotas
+    var moraBase = ( montoCuotaReferencia / 30) * totalDiasMora;
+
+    var moraTotal = moraBase * 0.02;
+    // Calcular monto final a pagar
+    var montoFinal = moraBase + moraTotal;
+
     }
+
+   
+
+    // Mostrar total de días de mora en el modal
+    var moraInfo = document.createElement('li');
+    moraInfo.classList.add('list-group-item', 'fw-bold');
+    moraInfo.textContent = `Total de días de mora: ${totalDiasMora}`;
+    listaSeleccionadas.appendChild(moraInfo);
+
+    // Mostrar valores en el formulario
+    document.getElementById('montoPorMora').value = moraBase.toFixed(2);
+    document.getElementById('moraAplicada').value = moraTotal.toFixed(2);
+    document.getElementById('montoTotal').value = montoFinal.toFixed(2);
+    document.getElementById('descripcion_pago').value = descripcionPago;
+
+
+    // Obtener las cuotas seleccionadas y agregarlas al campo oculto
+var cuotasSeleccionadas = Array.from(checkboxes).map(cb => cb.dataset.cuota).join(',');
+document.getElementById('cuotasSeleccionadas').value = cuotasSeleccionadas;
+
+
+
+    $('#modalCuotas').modal('hide'); 
 });
 
-document.getElementById('cuota').addEventListener('change', function() {
-    var selectedOption = this.options[this.selectedIndex];
-    var fecha = selectedOption.getAttribute('data-fecha');
-    var monto = selectedOption.getAttribute('data-monto');
-    var fechaIni = selectedOption.getAttribute('data-fechaInicio');
-    document.getElementById('fechaPagoEsperada').value = fecha;
-    document.getElementById('montoPago').value = monto;
-    document.getElementById('fechaInicio').value = fechaIni;
-    
-});
-
-
-
-document.getElementById('fechaPago').addEventListener('change', function() {
-    var fechaPago = new Date(this.value);
-    var fechaPagoEsperada = new Date(document.getElementById('fechaPagoEsperada').value);
-    var fechaInicio = new Date(document.getElementById('fechaInicio').value); // Obtener fecha de inicio
-
-    var fechaInicioTolerancia = new Date(fechaPagoEsperada);
-    fechaInicioTolerancia.setDate(fechaPagoEsperada.getDate() - 1);
-
-    var fechaFinTolerancia = new Date(fechaPagoEsperada);
-    fechaFinTolerancia.setDate(fechaPagoEsperada.getDate() + 1);
-
-    var diasRetraso = 0;
-
-    if (fechaPago < fechaInicioTolerancia) {
-        document.getElementById('mora-container').style.display = 'none';
-        document.getElementById('retraso-container').style.display = 'none';
-    } else if (fechaPago > fechaFinTolerancia) {
-        diasRetraso = calcularMora(fechaInicio, fechaPago); // Nuevo cálculo con meses de 30 días
-        document.getElementById('mora-container').style.display = 'block';
-        document.getElementById('retraso-container').style.display = 'block';
-        document.getElementById('dias_retraso').textContent = diasRetraso;
-    } else {
-        document.getElementById('mora-container').style.display = 'none';
-        document.getElementById('retraso-container').style.display = 'none';
-    }
-
-    calcularTotalConMora(diasRetraso);
-});
-
-// Función para calcular la mora con meses de 30 días
-function calcularMora(fechaInicio, fechaPago) {
-    let inicio = new Date(fechaInicio);
-    let pago = new Date(fechaPago);
-
-    let añosDiferencia = pago.getFullYear() - inicio.getFullYear();
-    let mesesDiferencia = (añosDiferencia * 12) + (pago.getMonth() - inicio.getMonth());
-    let diasDiferencia = (pago.getDate() - inicio.getDate());
-
-    let diasMora = (mesesDiferencia * 30) + diasDiferencia;
-    return diasMora;
-}
-
-
-
-document.getElementById('montoPago').addEventListener('input', function() {
-    var diasRetraso = parseInt(document.getElementById('dias_retraso').textContent) || 0;
-    calcularTotalConMora(diasRetraso);
-});
-
-document.getElementById('porcentaje_mora').addEventListener('input', function() {
-    var diasRetraso = parseInt(document.getElementById('dias_retraso').textContent) || 0;
-    calcularTotalConMora(diasRetraso);
-});
-
-
-function calcularTotalConMora(diasRetraso) {
-    var montoPago = parseFloat(document.getElementById('montoPago').value) || 0;
-    var porcentajeMora = parseFloat(document.getElementById('porcentaje_mora').value) || 0;
-
-    // Calcular el monto adicional sin mora por retraso
-    var totalSinMora = (montoPago / 30) * diasRetraso;
-
-    // Calcular monto de mora aplicando el porcentaje ingresado
-    var montoMora = (totalSinMora * (porcentajeMora / 100));
-
-    document.getElementById('montoAdicional').value = totalSinMora.toFixed(2); 
-
-    // Monto total a pagar
-    var montoTotal = totalSinMora + montoMora;
-
-    // Actualizar los campos en el formulario
-    document.getElementById('monto_total').value = montoTotal.toFixed(2);
-    document.getElementById('mora_aplicada').textContent = porcentajeMora.toFixed(2);
-    document.getElementById('diferencia').value = montoMora.toFixed(2);
-    document.getElementById('montoMora').value = montoMora.toFixed(2);
-}
 
 
 document.getElementById('metodo_pago').addEventListener('change', function() {
@@ -302,9 +307,5 @@ document.getElementById('metodo_pago').addEventListener('change', function() {
     }
 });
 
-
-
 </script>
 @endsection
-
-

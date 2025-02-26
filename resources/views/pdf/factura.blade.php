@@ -201,7 +201,6 @@
             color: #333;
             background-color: #f9f9f9;
         }
-
         header {
             background-color: #5d87ff;
             color: white;
@@ -209,19 +208,11 @@
             text-align: center;
             border-bottom: 4px solid #4b67b4;
         }
-
         h1 {
             margin: 0;
             font-size: 28px;
             letter-spacing: 1px;
         }
-
-        .clearfix::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
         #details {
             margin: 20px auto;
             max-width: 900px;
@@ -230,29 +221,18 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
-
         #company, #project {
-            margin-bottom: 20px;
-            padding: 10px 15px;
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
         }
-
         #company {
-            float: left;
-            text-align: left;
-            width: 48%;
             border-right: 2px solid #e0e0e0;
+            padding-right: 15px;
         }
-
         #project {
-            float: right;
             text-align: right;
-            width: 48%;
         }
-
-        #company div, #project div {
-            margin-bottom: 10px;
-        }
-
         #invoice {
             text-align: center;
             margin: 30px auto;
@@ -260,39 +240,19 @@
             padding: 15px 20px;
             border-radius: 8px;
         }
-
-        #invoice h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #333;
-        }
-
-        #invoice p {
-            margin: 5px 0;
-            font-size: 16px;
-            color: #555;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
         table th, table td {
             text-align: left;
             padding: 12px;
             border: 1px solid #ddd;
         }
-
         table th {
             background-color: #f2f2f2;
         }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
         table .total {
             font-weight: bold;
             color: #4CAF50;
@@ -301,7 +261,7 @@
 
         #notices {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 80px;
             font-size: 0.9em;
             color: #555;
         }
@@ -310,6 +270,7 @@
             color: #d32f2f;
         }
 
+        
         footer {
             text-align: center;
             color: #777;
@@ -324,7 +285,7 @@
 <header>
     <h1>Notificación de pago</h1>
 </header>
-<div id="details" class="clearfix">
+<div id="details">
     <div id="company">
         <div><strong>Proyecto El Jobo</strong></div>
         <div>Santa Ana, El Salvador</div>
@@ -336,40 +297,36 @@
         <div><strong>Nombre:</strong> {{ $cliente->nombre }}</div>
         <div><strong>Polígono:</strong> {{ $propiedad->poligono }}</div>
         <div><strong>Lote:</strong> {{ $propiedad->lote }}</div>
-        <div><strong>Fecha de Pago:</strong> 
-            @foreach ($detallePago as $detalle)
-                {{ \Carbon\Carbon::parse($detalle['fechaPago'])->timezone('America/El_Salvador')->format('d-m-Y') }}@if(!$loop->last), @endif
-            @endforeach
-        </div>
+        <div><strong>Fecha de Pago:</strong> {{ \Carbon\Carbon::parse($detallePago->fechaPago)->format('d-m-Y') }}</div>
     </div>
 </div>
 <div id="invoice">
-    <h2>Pago de {{ count($detallePago) }} cuota(s)</h2>
-    <p>Fecha de Generación: {{ now()->timezone('America/El_Salvador')->format('d-m-Y H:i:s') }}</p>
+    <h2>Pago de cuota</h2>
+    <p>Fecha de Generación: {{ now()->format('d-m-Y H:i:s') }}</p>
 </div>
 <main>
     <table>
         <thead>
             <tr>
-                <th>Cuota</th>
+                <th>Monto Cuota</th>
                 <th>Descripción</th>
-                <th>Monto Efectuado</th>
-                <th>Mora</th>
-                <th>Total</th>
+                <th style="text-align: right;">Monto por mora</th>
+                <th style="text-align: right;">Mora aplicada</th>
+                <th style="text-align: right;">Total</th>
                 <th>Método de pago</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($detallePago as $detalle)
-                <tr>
-                    <td>{{ $detalle['cuota'] }}</td>
-                    <td>{{ $detalle['descripcion'] }}</td>
-                    <td>${{ number_format($detalle['montoPago'], 2) }}</td>
-                    <td>${{ number_format($detalle['monto_mora'], 2) }}</td>
-                    <td class="total">${{ number_format($detalle['monto_total'], 2) }}</td>
-                    <td>{{ $detalle['metodo_pago'] }}</td>
-                </tr>
-            @endforeach
+            <tr>
+                <td>{{ $detallePago->montoCuota }}</td>
+                <td>{{ $detallePago->descripcion }}</td>
+                <td style="text-align: right;">${{ number_format($detallePago->montoPorMora, 2) }}</td>
+                <td style="text-align: right;">${{ number_format($detallePago->moraAplicada, 2) }}</td>
+                <td class="total" style="text-align: right; font-weight: bold; color: #4CAF50;">
+                    ${{ number_format($detallePago->montoTotal, 2) }}
+                </td>
+                <td>{{ $detallePago->metodo_pago ?? 'N/A' }}</td>
+            </tr>
         </tbody>
     </table>
     <div id="notices">
@@ -382,4 +339,3 @@
 </footer>
 </body>
 </html>
-
