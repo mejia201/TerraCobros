@@ -5,7 +5,7 @@
 </head>
 <body>
     <p>Estimado {{ $cliente->nombre }},</p>
-    <p>Adjunto encontrará la factura correspondiente a su reciente pago.</p>
+    <p>Adjunto encontrará el detalle correspondiente a su reciente pago.</p>
     <p>Gracias por su preferencia.</p>
 </body>
 </html>

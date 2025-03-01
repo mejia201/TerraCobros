@@ -323,7 +323,7 @@ public function store(Request $request)
     } catch (\Throwable $th) {
         DB::rollBack();
         Log::error('Error al realizar el pago: ' . $th->getMessage());
-        dd($th->getMessage()); // Debug para ver el error en pantalla
+        // dd($th->getMessage()); // Debug para ver el error en pantalla
         return redirect()->route('pago.index')->with('error', 'Sucedió un error al realizar el pago.');
     }
 }
