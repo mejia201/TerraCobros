@@ -335,7 +335,7 @@
     </div>
 </main>
 <footer>
-    Esta factura se generó electrónicamente y no requiere firma ni sello. Gracias por su pago.
+    Esta documento se generó electrónicamente y no requiere firma ni sello. Gracias por su pago.
 </footer>
 </body>
 </html>
