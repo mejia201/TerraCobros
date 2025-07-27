@@ -163,6 +163,65 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// document.getElementById('btnSeleccionarCuotas').addEventListener('click', function() {
+//     var idFinanciamiento = document.getElementById('id_financiamiento').value;
+//     var listaCuotas = document.getElementById('listaCuotas');
+//     var fechaSeleccionada = document.getElementById('fechaPago').value;
+//     listaCuotas.innerHTML = ''; 
+
+//     fetch('/pagos/' + idFinanciamiento + '/cuotas')
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.length === 0) {
+//                 console.log("No hay cuotas disponibles.");
+//                 return;
+//             }
+
+//              console.log(data);
+           
+//             let fechaPagoInput = new Date(fechaSeleccionada); // Fecha real de pago
+//             let fechaReferencia = new Date(data[0].fechaPagoEsperada); // Fecha esperada de la primera cuota
+
+//             data.forEach(function(cuota, index) {
+
+//                 var montoCuota = cuota.montoPago;
+//                 document.getElementById('data-cuota').value = montoCuota;
+
+//                 let fechaCuota = new Date(cuota.fechaPagoEsperada);
+//                 let diasMora = 0;
+
+//                 if (index === 0) { 
+//                     // Primera cuota: Si se paga después de la fecha esperada, son 30 días de mora
+//                     diasMora = fechaPagoInput > fechaCuota ? 30 : 0;
+//                 } else {
+//                     // Cuotas siguientes: Contar los días desde la fecha esperada de la cuota anterior
+//                     let diferenciaDias = Math.floor((fechaPagoInput - fechaReferencia) / (1000 * 60 * 60 * 24));
+//                     diasMora = diferenciaDias > 0 ? diferenciaDias : 0;
+//                 }
+
+//                 fechaReferencia = fechaCuota; // Actualizar referencia para la siguiente cuota
+
+//                 var item = document.createElement('li');
+//                 item.classList.add('list-group-item');
+
+//                 var checkbox = `<input type="checkbox" class="cuota-checkbox" value="${cuota.id}" 
+//                                     data-cuota="${cuota.cuota}" 
+//                                     data-monto="${cuota.montoPago}" 
+//                                     data-fecha="${cuota.fechaPagoEsperada}" 
+//                                     data-dias="${diasMora}"> `;
+//                 item.innerHTML = checkbox + `Cuota ${cuota.cuota} - Monto: $${cuota.montoPago} (Días de mora: ${diasMora})`;
+                
+//                 listaCuotas.appendChild(item);
+//             });
+
+//         })
+//         .catch(error => console.error("Error al obtener cuotas:", error));
+
+//     $('#modalCuotas').modal('show');
+// });
+
+
+
 document.getElementById('btnSeleccionarCuotas').addEventListener('click', function() {
     var idFinanciamiento = document.getElementById('id_financiamiento').value;
     var listaCuotas = document.getElementById('listaCuotas');
@@ -177,13 +236,15 @@ document.getElementById('btnSeleccionarCuotas').addEventListener('click', functi
                 return;
             }
 
-            // console.log(data);
+            console.log(data);
            
             let fechaPagoInput = new Date(fechaSeleccionada); // Fecha real de pago
             let fechaReferencia = new Date(data[0].fechaPagoEsperada); // Fecha esperada de la primera cuota
 
-            data.forEach(function(cuota, index) {
+            // Contador de cuotas vencidas
+            let cuotasVencidas = data.filter(cuota => new Date(cuota.fechaPagoEsperada) < fechaPagoInput).length;
 
+            data.forEach(function(cuota, index) {
                 var montoCuota = cuota.montoPago;
                 document.getElementById('data-cuota').value = montoCuota;
 
@@ -191,8 +252,18 @@ document.getElementById('btnSeleccionarCuotas').addEventListener('click', functi
                 let diasMora = 0;
 
                 if (index === 0) { 
-                    // Primera cuota: Si se paga después de la fecha esperada, son 30 días de mora
-                    diasMora = fechaPagoInput > fechaCuota ? 30 : 0;
+                    // Primera cuota
+                    if (fechaPagoInput > fechaCuota) {
+                        let diferenciaDias = Math.floor((fechaPagoInput - fechaCuota) / (1000 * 60 * 60 * 24));
+                        
+                        if (cuotasVencidas === 1) {
+                            // Si solo una cuota está vencida, sumar 30 días fijos + los días extra
+                            diasMora = 30 + diferenciaDias;
+                        } else {
+                            // Si hay más de una cuota vencida, calcular normalmente
+                            diasMora = diferenciaDias;
+                        }
+                    }
                 } else {
                     // Cuotas siguientes: Contar los días desde la fecha esperada de la cuota anterior
                     let diferenciaDias = Math.floor((fechaPagoInput - fechaReferencia) / (1000 * 60 * 60 * 24));
